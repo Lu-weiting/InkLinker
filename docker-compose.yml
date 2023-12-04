@@ -40,8 +40,8 @@ services:
       - "443:443"
     volumes:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./private/mergedCert.crt:/etc/ssl/mergedCert.crt
-      - ./private/private.key:/etc/ssl/private.key
+      - ./private/mergedCert.crt:/etc/ssl/certs/mergedCert.crt
+      - ./private/private.key:/etc/ssl/certs/private.key
     networks:
       - inklinker_network
     depends_on:
