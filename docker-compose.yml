@@ -6,7 +6,7 @@ services:
       build: 
         context: ./backend
         dockerfile: Dockerfile
-      container_name: stylish_container
+      container_name: inkLinker_backend_container
       env_file:
         - .env
       networks:
@@ -16,7 +16,7 @@ services:
       build: 
         context: ./frontend
         dockerfile: Dockerfile
-      container_name: stylish_frontend_container
+      container_name: inkLinker_frontend_container
       env_file:
         - .env
       networks:
@@ -30,7 +30,7 @@ services:
       - "6379:6379"
     networks:
       - inkLinker_network
-
+# /certs?
   nginx:
     image: nginx
     container_name: nginx
@@ -39,7 +39,7 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf  #本機對應容器
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - ./private/mergedCert.crt:/etc/ssl/mergedCert.crt
       - ./private/private.key:/etc/ssl/private.key
     networks:
