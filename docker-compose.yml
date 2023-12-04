@@ -2,25 +2,25 @@ version: '3.8'
 
 services:
 
-  inkLinker_backend:
+  inklinker_backend:
       build: 
         context: ./backend
         dockerfile: Dockerfile
-      container_name: inkLinker_backend_container
+      container_name: inklinker_backend_container
       env_file:
         - .env
       networks:
-        - inkLinker_network
+        - inklinker_network
 
-  inkLinker_frontend:
+  inklinker_frontend:
       build: 
         context: ./frontend
         dockerfile: Dockerfile
-      container_name: inkLinker_frontend_container
+      container_name: inklinker_frontend_container
       env_file:
         - .env
       networks:
-        - inkLinker_network
+        - inklinker_network
 
   redis:
     image: redis
@@ -29,7 +29,7 @@ services:
     ports:
       - "6379:6379"
     networks:
-      - inkLinker_network
+      - inklinker_network
 # /certs?
   nginx:
     image: nginx
@@ -43,10 +43,10 @@ services:
       - ./private/mergedCert.crt:/etc/ssl/mergedCert.crt
       - ./private/private.key:/etc/ssl/private.key
     networks:
-      - inkLinker_network
+      - inklinker_network
     depends_on:
-      - inkLinker_backend
+      - inklinker_backend
 
 
 networks:
-  inkLinker_network:   
+  inklinker_network:   
