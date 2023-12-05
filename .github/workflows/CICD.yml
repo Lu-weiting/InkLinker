@@ -1,0 +1,30 @@
+name: inklinker workflow
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+    deploy_inklinker:
+        runs-on: ubuntu-latest
+        steps:
+        - name: Deploy to ec2
+          uses: appleboy/ssh-action@master
+          with:
+            host: ${{ secrets.IP }}
+            username: ${{ secrets.EC2_USERNAME }}
+            key: ${{ secrets.EC2_KEY }}
+            script: |
+              cd InkLinker
+              git pull origin develop
+              if [ ! -d "private" ]; then
+                mkdir private
+              fi
+              
+              echo "${{ secrets.ENV }}" > .env
+              echo "${{ secrets.PRIVATE_KEY }}" > private/private.key
+              echo "${{ secrets.CERTIFICATE }}" > private/mergedCert.crt
+              docker system prune
+              docker-compose down
+              docker-compose up --build -d
+              docker image prune -af
