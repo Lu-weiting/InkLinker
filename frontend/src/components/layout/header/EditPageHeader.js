@@ -66,7 +66,7 @@ const username = 'Tim';
 const status = 'Saved';
 
 
-const EditHeader = ({setIsPublished}) => {
+const EditHeader = ({setIsPublished, saveStatus}) => {
   return (
       <HeaderContainer>
         <LeftSection>
@@ -74,7 +74,7 @@ const EditHeader = ({setIsPublished}) => {
                 <img src={EditLogo} alt="logo" width={63} height={70} />
             </a>
             <DraftText>Draft in {username}</DraftText>
-            <EditStatus>{status}</EditStatus>
+            <EditStatus>{saveStatus}</EditStatus>
         </LeftSection>
         <RightSection>
             <PublishBtn
