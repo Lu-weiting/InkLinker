@@ -90,8 +90,10 @@ const EditMain = ({ isPublished ,setSaveStatus}) => {
             console.log('Received status from server:', data);
         });
         const handleOnline = () => setIsOnline(true);
-        const handleOffline = () => setIsOnline(false);
-
+        const handleOffline = () => {
+            setIsOnline(false);
+            setSaveStatus("Can't Save!!");
+        }
         window.addEventListener('online', handleOnline);
         window.addEventListener('offline', handleOffline);
 
