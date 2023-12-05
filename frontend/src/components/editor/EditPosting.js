@@ -47,14 +47,20 @@ const TitleInput = styled.input`
     outline: none;
   }
 `;
-const initialTitle = JSON.parse(localStorage.getItem('title')) || '';
-const initialContent = JSON.parse(localStorage.getItem('content')) || '';
+const post_id = 1;
+const titleStoreKey = `${post_id}&title`;
+const contentStoreKey = `${post_id}&content`;
+const initialTitle = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
+const initialContent = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
 
-const EditMain = ({ isPublished }) => {
+
+const EditMain = ({ isPublished ,setSaveStatus}) => {
     const [title, setTitle] = useState(initialTitle);
     const [text, setText] = useState(initialContent);
     const [markdown, setMarkdown] = useState("");
     const [isOnline, setIsOnline] = useState(navigator.onLine);
+    
+    
 
     const reactQuillRef = useRef(null);
     const turndownService = new TurndownService();
@@ -63,15 +69,16 @@ const EditMain = ({ isPublished }) => {
 
     useEffect(() => {
         const syncData = () => {
-            const storedTitle = JSON.parse(localStorage.getItem('title')) || '';
-            const storedContent = JSON.parse(localStorage.getItem('content')) || '';
+            const storedTitle = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
+            const storedContent = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
 
             // 檢查 localStorage 中是否有未同步的數據（可以優化
-            if (storedTitle !== title || storedContent !== text) {
+            // if (storedTitle !== title || storedContent !== text) {
                 console.log('Syncing data with server...');
-                socketRef.current.emit('titleMsg', { title: storedTitle });
-                socketRef.current.emit('contentMsg', { content: storedContent });
-            }
+                
+                socketRef.current.emit('titleMsg', storedTitle);
+                socketRef.current.emit('contentMsg', storedContent);
+            // }
         };
         socketRef.current = io(SOCKET_SERVER_URL);
         socketRef.current.on('connect', () => {
@@ -79,7 +86,8 @@ const EditMain = ({ isPublished }) => {
             syncData();
         });
         socketRef.current.on('msgFromServer', (data) => {
-            console.log('Received data from server:', data);
+            setSaveStatus('Saved');
+            console.log('Received status from server:', data);
         });
         const handleOnline = () => setIsOnline(true);
         const handleOffline = () => setIsOnline(false);
@@ -94,14 +102,19 @@ const EditMain = ({ isPublished }) => {
         };
     }, []);
 
-    
+
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
 
     };
     const handleTitleBlur = () => {
-        localStorage.setItem('title', JSON.stringify(title));
-        socketRef.current.emit('titleMsg', { title: title });
+        setSaveStatus("Saving");
+        const titleObj ={
+            postId: post_id,
+            title: title
+        };
+        localStorage.setItem(titleStoreKey, JSON.stringify(titleObj));
+        socketRef.current.emit('titleMsg',  titleObj);
     };
     const handleChange = (value) => {
         // console.log(value);
@@ -119,8 +132,13 @@ const EditMain = ({ isPublished }) => {
         }
     };
     const handleContentBlur = () => {
-        localStorage.setItem('content', JSON.stringify(text));
-        socketRef.current.emit('contentMsg', { content: text });
+        setSaveStatus("Saving");
+        const contentObj ={
+            postId: post_id,
+            content: text
+        };
+        localStorage.setItem(contentStoreKey, JSON.stringify(contentObj));
+        socketRef.current.emit('contentMsg', contentObj);
     };
 
     // const uploadImage = async () => {
