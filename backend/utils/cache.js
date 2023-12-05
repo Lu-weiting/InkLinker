@@ -32,7 +32,7 @@ module.exports = {
         try{
             const transaction = await client.multi();
             transaction.set(key, JSON.stringify(value));
-            transaction.expire(key, 60 * 60 * 24);
+            transaction.expire(key, 60 * 60 * 24 * 7);
             await transaction.exec();
             return null;
         }catch(err){
