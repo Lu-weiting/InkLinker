@@ -11,7 +11,7 @@ Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
 Quill.register('modules/imageUploader', ImageUploader);
 
 const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL;
-console.log(SOCKET_SERVER_URL);
+console.log(`SOCKET_SERVER_URL: ${SOCKET_SERVER_URL}`);
 const MainContainer = styled.div`
     width: 100%;
     // background-color: #f8f8f8;
@@ -50,13 +50,14 @@ const TitleInput = styled.input`
 const post_id = 1;
 const titleStoreKey = `${post_id}&title`;
 const contentStoreKey = `${post_id}&content`;
-const initialTitle = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
-const initialContent = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
+// TODO
+const initialTitleObj = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
+const initialContentObj = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
 
 
 const EditMain = ({ isPublished ,setSaveStatus}) => {
-    const [title, setTitle] = useState(initialTitle);
-    const [text, setText] = useState(initialContent);
+    const [title, setTitle] = useState(initialTitleObj.title);
+    const [text, setText] = useState(initialContentObj.content);
     const [markdown, setMarkdown] = useState("");
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     
