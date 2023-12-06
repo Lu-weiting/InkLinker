@@ -81,11 +81,13 @@ const EditMain = ({ isPublished ,setSaveStatus}) => {
                 socketRef.current.emit('contentMsg', storedContent);
             // }
         };
+        console.log("io before");
         socketRef.current = io(SOCKET_SERVER_URL);
         socketRef.current.on('connect', () => {
             console.log('Connected to server');
             syncData();
         });
+        console.log("io after");
         socketRef.current.on('msgFromServer', (data) => {
             setSaveStatus('Saved');
             console.log('Received status from server:', data);
@@ -116,6 +118,7 @@ const EditMain = ({ isPublished ,setSaveStatus}) => {
             postId: post_id,
             title: title
         };
+        console.log(titleObj);
         localStorage.setItem(titleStoreKey, JSON.stringify(titleObj));
         socketRef.current.emit('titleMsg',  titleObj);
     };
@@ -140,6 +143,7 @@ const EditMain = ({ isPublished ,setSaveStatus}) => {
             postId: post_id,
             content: text
         };
+        console.log(contentObj);
         localStorage.setItem(contentStoreKey, JSON.stringify(contentObj));
         socketRef.current.emit('contentMsg', contentObj);
     };
