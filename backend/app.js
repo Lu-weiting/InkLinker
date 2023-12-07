@@ -32,6 +32,7 @@ app.get('/generate-presigned-url', async (req, res) => {
 
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
+    path: '/api/socket.io',
     cors: {
         origin: "*",
     },

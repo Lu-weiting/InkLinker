@@ -85,7 +85,7 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             // }
         };
         console.log("io before");
-        socketRef.current = io(SOCKET_SERVER_URL);
+        socketRef.current = io('https://18.177.160.174', { path: '/api/socket.io' });
         console.log(socketRef.current);
         socketRef.current.on('connect', () => {
             console.log('Connected to server');
