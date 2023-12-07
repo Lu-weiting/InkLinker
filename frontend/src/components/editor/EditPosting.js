@@ -86,7 +86,7 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
         };
         console.log("io before");
         socketRef.current = io(SOCKET_SERVER_URL);
-        console.log("socket: "+ socketRef.current);
+        console.log(socketRef.current);
         socketRef.current.on('connect', () => {
             console.log('Connected to server');
             syncData();
