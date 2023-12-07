@@ -52,7 +52,7 @@ const PublishBtn = styled.button`
     justify-content: center;
     border: none;
 `;
-const RightSmallSection =styled.div`
+const RightSmallSection = styled.div`
     padding: 0 0.8rem;
 `;
 
@@ -62,42 +62,54 @@ const RightSmallSection =styled.div`
 
 // token...
 const username = 'Tim';
-// socket msg from backend
-const status = 'Saved';
 
 
-const EditHeader = ({setIsPublished, saveStatus}) => {
-  return (
-      <HeaderContainer>
-        <LeftSection>
-            <a href="/">
-                <img src={EditLogo} alt="logo" width={63} height={70} />
-            </a>
-            <DraftText>Draft in {username}</DraftText>
-            <EditStatus>{saveStatus}</EditStatus>
-        </LeftSection>
-        <RightSection>
-            <PublishBtn
-                type="button"
-                onClick={() => {
-                    setIsPublished(true);
-                }}
-            >
-                Publish
-            </PublishBtn>
-            <RightSmallSection>
-                <img src={Dots} alt="dots" width={30} height={24} />
-            </RightSmallSection>
-            <RightSmallSection>
-            <img src={Bell} alt="bell" width={30} height={30} />
-            </RightSmallSection>
-            <RightSmallSection>
-            <img src={Member} alt="member" width={40} height={40} />
-            </RightSmallSection>
-            
-        </RightSection>
-      </HeaderContainer>
-  );
+const EditHeader = ({ setIsPublished, saveStatus, setTags }) => {
+    const handlePublish = () => {
+        swal.fire({
+            title: 'Enter Hashtags',
+            input: 'text',
+            inputAttributes: {
+                autocapitalize: 'off'
+            },
+            showCancelButton: true,
+            confirmButtonText: 'Submit',
+            showLoaderOnConfirm: true,
+            preConfirm: (tags) => {
+                setTags(tags.split(' ')); // 分割字符串成標籤數組
+                setIsPublished(true);
+            }
+        });
+    };
+    return (
+        <HeaderContainer>
+            <LeftSection>
+                <a href="/">
+                    <img src={EditLogo} alt="logo" width={63} height={70} />
+                </a>
+                <DraftText>Draft in {username}</DraftText>
+                <EditStatus>{saveStatus}</EditStatus>
+            </LeftSection>
+            <RightSection>
+                <PublishBtn
+                    type="button"
+                    onClick={handlePublish}
+                >
+                    Publish
+                </PublishBtn>
+                <RightSmallSection>
+                    <img src={Dots} alt="dots" width={30} height={24} />
+                </RightSmallSection>
+                <RightSmallSection>
+                    <img src={Bell} alt="bell" width={30} height={30} />
+                </RightSmallSection>
+                <RightSmallSection>
+                    <img src={Member} alt="member" width={40} height={40} />
+                </RightSmallSection>
+
+            </RightSection>
+        </HeaderContainer>
+    );
 };
 
 export default EditHeader;

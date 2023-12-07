@@ -4,13 +4,16 @@ import ReactQuill, { Quill } from 'react-quill';
 import ImageUploader from 'quill-image-uploader';
 // import { quillToMarkdown } from 'quill-markdown';
 import TurndownService from 'turndown';
-import io from 'socket.io-client';
+import {io} from 'socket.io-client';
 import MarkdownShortcuts from 'quill-markdown-shortcuts';
 import '../../globalCover.css';
 Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
 Quill.register('modules/imageUploader', ImageUploader);
 
 const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL;
+// const BUCKET_NAME = process.env.REACT_APP_BUCKET_NAME;
+// const S3_BUCKET_REGION = process.env.REACT_APP_S3_BUCKET_REGION;
+// console.log(S3_BUCKET_REGION);
 console.log(`SOCKET_SERVER_URL: ${SOCKET_SERVER_URL}`);
 const MainContainer = styled.div`
     width: 100%;
@@ -55,7 +58,7 @@ const initialTitleObj = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
 const initialContentObj = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
 
 
-const EditMain = ({ isPublished ,setSaveStatus}) => {
+const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
     const [title, setTitle] = useState(initialTitleObj.title);
     const [text, setText] = useState(initialContentObj.content);
     const [markdown, setMarkdown] = useState("");
@@ -110,6 +113,27 @@ const EditMain = ({ isPublished ,setSaveStatus}) => {
             window.removeEventListener('offline', handleOffline);
         };
     }, []);
+    useEffect(() => {
+        if (isPublished) {
+            // 當 isPublished 變為 true 時執行
+            const publishContent = async () => {
+                try {
+                    const response = await axios.post('您的後端API網址', {
+                        title,
+                        content: text,
+                        tags // 假設API需要標籤數據
+                    });
+                    console.log('Content published:', response.data);
+                    // 處理發布成功的邏輯
+                } catch (error) {
+                    console.error('Error publishing content:', error);
+                    // 處理錯誤
+                }
+            };
+
+            publishContent();
+        }
+    }, [isPublished]);
 
 
     const handleTitleChange = (event) => {
