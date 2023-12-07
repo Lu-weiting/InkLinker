@@ -4,7 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const http = require('http');
 const redis = require('./utils/cache');
-
+const s3Client = require('./utils/s3presign');
 app.use(cors());
 app.use(express.json());
 
@@ -18,6 +18,16 @@ app.get('/.well-known/pki-validation/444574AA09C845D69B87F522F342F2BB.txt', (req
     const file= path.join(__dirname,'static','444574AA09C845D69B87F522F342F2BB.txt');
     console.log(file);
     res.sendFile(file);
+});
+
+app.get('/generate-presigned-url', async (req, res) => {
+    try {
+        const presignedUrl = await s3Client.getSign(req.query.filename);
+        res.json({ presignedUrl });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error generating presigned URL');
+    }
 });
 
 const server = http.createServer(app);
