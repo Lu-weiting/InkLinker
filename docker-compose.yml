@@ -30,6 +30,8 @@ services:
       - "6379:6379"
     networks:
       - inklinker_network
+    depends_on:
+      - inklinker_backend
 # /certs?
   nginx:
     image: nginx
