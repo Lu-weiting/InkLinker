@@ -4,7 +4,7 @@ import EditLogo from '../../../assets/images/editLogo.png'
 import Bell from "../../../assets/images/bell.png";
 import Dots from "../../../assets/images/dots.png";
 import Member from "../../../assets/images/member.png";
-
+import Swal from "sweetalert2";
 const HeaderContainer = styled.header`
   top: 0;
   width: 100%;
@@ -66,7 +66,7 @@ const username = 'Tim';
 
 const EditHeader = ({ setIsPublished, saveStatus, setTags }) => {
     const handlePublish = () => {
-        swal.fire({
+        Swal.fire({
             title: 'Enter Hashtags',
             input: 'text',
             inputAttributes: {
