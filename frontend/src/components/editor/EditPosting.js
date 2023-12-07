@@ -114,27 +114,28 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             window.removeEventListener('offline', handleOffline);
         };
     }, []);
-    // useEffect(() => {
-    //     if (isPublished) {
-    //         // 當 isPublished 變為 true 時執行
-    //         const publishContent = async () => {
-    //             try {
-    //                 const response = await axios.post('', {
-    //                     title,
-    //                     content: text,
-    //                     tags
-    //                 });
-    //                 console.log('Content published:', response.data);
-    //                 // 處理發布成功的邏輯
-    //             } catch (error) {
-    //                 console.error('Error publishing content:', error);
+    useEffect(() => {
+        if (isPublished) {
+            // 當 isPublished 變為 true 時執行
+            const publishContent = async () => {
+                try {
+                    const response = await axios.post('', {
+                        title,
+                        content: text,
+                        tags,
+                        images
+                    });
+                    console.log('Content published:', response.data);
+                    // 處理發布成功的邏輯
+                } catch (error) {
+                    console.error('Error publishing content:', error);
                     
-    //             }
-    //         };
+                }
+            };
 
-    //         publishContent();
-    //     }
-    // }, [isPublished]);
+            publishContent();
+        }
+    }, [isPublished]);
 
 
     const handleTitleChange = (event) => {
