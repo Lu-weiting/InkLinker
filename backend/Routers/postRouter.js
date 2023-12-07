@@ -4,6 +4,7 @@ const router = express.Router();
 // const postController = require('../Controller/postController');
 
 //post
+router.get('/edit',productController.getProductDetail);
 
 
 module.exports = router;
