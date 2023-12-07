@@ -73,16 +73,16 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
 
     useEffect(() => {
         const syncData = () => {
-            const storedTitle = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
-            const storedContent = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
+            const storedTitle = JSON.parse(localStorage.getItem(titleStoreKey)) || undefined;
+            const storedContent = JSON.parse(localStorage.getItem(contentStoreKey)) || undefined;
 
-            // 檢查 localStorage 中是否有未同步的數據（可以優化
-            // if (storedTitle !== title || storedContent !== text) {
+            // 空值是可過的
+            if (storedTitle !== undefined || storedContent !== undefined) {
                 console.log('Syncing data with server...');
                 
                 socketRef.current.emit('titleMsg', storedTitle);
                 socketRef.current.emit('contentMsg', storedContent);
-            // }
+            }
         };
         console.log("io before");
         socketRef.current = io('https://18.177.160.174', { path: '/api/socket.io' });
@@ -118,16 +118,16 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             // 當 isPublished 變為 true 時執行
             const publishContent = async () => {
                 try {
-                    const response = await axios.post('您的後端API網址', {
+                    const response = await axios.post('', {
                         title,
                         content: text,
-                        tags // 假設API需要標籤數據
+                        tags
                     });
                     console.log('Content published:', response.data);
                     // 處理發布成功的邏輯
                 } catch (error) {
                     console.error('Error publishing content:', error);
-                    // 處理錯誤
+                    
                 }
             };
 
@@ -137,11 +137,13 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
 
 
     const handleTitleChange = (event) => {
+        if(isOnline){
+            setSaveStatus("Saving");
+        }
         setTitle(event.target.value);
 
     };
     const handleTitleBlur = () => {
-        setSaveStatus("Saving");
         const titleObj ={
             postId: post_id,
             title: title
@@ -152,6 +154,9 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
     };
     const handleChange = (value) => {
         // console.log(value);
+        if(isOnline){
+            setSaveStatus("Saving");
+        }
         setText(value);
 
         if (reactQuillRef.current) {
@@ -166,7 +171,6 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
         }
     };
     const handleContentBlur = () => {
-        setSaveStatus("Saving");
         const contentObj ={
             postId: post_id,
             content: text
