@@ -1,4 +1,6 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3');
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+
 require('dotenv').config();
 const {
     AWS_ACCESS_KEY_ID,
@@ -18,9 +20,9 @@ module.exports = {
     getSign: async (filename) => {
         const command = new PutObjectCommand({
             Bucket: BUCKET_NAME,
-            Key: filename, 
+            Key: filename,
         });
-        const presignedUrl = await s3Client.getSignedUrl(command, { expiresIn: 3600 }); // URL 有效期
+        const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
         return presignedUrl;
     }
 

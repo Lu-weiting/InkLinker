@@ -6,7 +6,7 @@ import ImageUploader from 'quill-image-uploader';
 import TurndownService from 'turndown';
 import {io} from 'socket.io-client';
 import MarkdownShortcuts from 'quill-markdown-shortcuts';
-// import axios from 'axios';
+import axios from 'axios';
 import '../../globalCover.css';
 Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
 Quill.register('modules/imageUploader', ImageUploader);
@@ -122,8 +122,8 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
                     const response = await axios.post('', {
                         title,
                         content: text,
-                        tags,
-                        images
+                        tags
+                        // images
                     });
                     console.log('Content published:', response.data);
                     // 處理發布成功的邏輯
