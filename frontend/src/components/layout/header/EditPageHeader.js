@@ -132,11 +132,11 @@ const EditHeader = ({ setIsPublished, saveStatus, setTags }) => {
                 </RightSmallSection>
 
             </RightSection>
-            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+            <Modal isOpen={isModalOpen} onClose={handleModalClose} userName={'Tim'}>
                 <ReactTagInput
                     tags={inputTags}
                     onChange={(newTags) => setInputTags(newTags)}
-                    placeholder="Type and press space to add a tag"
+                    placeholder="Type ..."
                 />
             </Modal>
         </HeaderContainer>
