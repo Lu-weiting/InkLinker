@@ -23,6 +23,7 @@ module.exports = {
             Key: filename,
         });
         const presignedUrl = await getSignedUrl(s3Client, command, { expiresIn: 3600 });
+        console.log(presignedUrl);
         return presignedUrl;
     }
 
