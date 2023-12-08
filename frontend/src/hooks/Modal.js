@@ -1,5 +1,5 @@
 import React from 'react';
-import './Modalc.css';
+import './ModalCSS.css';
 
 const Modal = ({ isOpen, onClose, children }) => {
   const modalClasses = `modal-backdrop ${isOpen ? 'open' : ''}`;
