@@ -24,7 +24,7 @@ app.get('/.well-known/pki-validation/444574AA09C845D69B87F522F342F2BB.txt', (req
     res.sendFile(file);
 });
 
-app.get('/generate-presigned-url', async (req, res) => {
+app.get('/api/generate-presigned-url', async (req, res) => {
     try {
         const presignedUrl = await s3Client.getSign(req.query.filename);
         res.json({ presignedUrl });
