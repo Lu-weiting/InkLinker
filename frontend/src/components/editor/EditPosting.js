@@ -14,7 +14,8 @@ Quill.register('modules/imageUploader', ImageUploader);
 const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL;
 const BUCKET_NAME = process.env.REACT_APP_BUCKET_NAME;
 const S3_BUCKET_REGION = process.env.REACT_APP_S3_BUCKET_REGION;
-console.log(S3_BUCKET_REGION);
+const API_ENDPOINT = process.env.REACT_APP_API;
+console.log(API_ENDPOINT);
 console.log(`SOCKET_SERVER_URL: ${SOCKET_SERVER_URL}`);
 const MainContainer = styled.div`
     width: 100%;
@@ -119,14 +120,13 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             // 當 isPublished 變為 true 時執行
             const publishContent = async () => {
                 try {
-                    const response = await axios.post('', {
+                    const response = await axios.post(`${API_ENDPOINT}/posts/create`, {
                         title,
                         content: text,
                         tags
-                        // images
                     });
+                    //sweet alert
                     console.log('Content published:', response.data);
-                    // 處理發布成功的邏輯
                 } catch (error) {
                     console.error('Error publishing content:', error);
                     

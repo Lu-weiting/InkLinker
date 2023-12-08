@@ -3,8 +3,9 @@ const router = express.Router();
 // const auth = require('../utils/auth');
 // const postController = require('../Controller/postController');
 
-//post
-router.get('/edit',productController.getProductDetail);
+
+// router.post('/create',postController.createPost);
+
 
 
 module.exports = router;
