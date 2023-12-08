@@ -12,9 +12,9 @@ Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
 Quill.register('modules/imageUploader', ImageUploader);
 
 const SOCKET_SERVER_URL = process.env.REACT_APP_SOCKET_SERVER_URL;
-// const BUCKET_NAME = process.env.REACT_APP_BUCKET_NAME;
-// const S3_BUCKET_REGION = process.env.REACT_APP_S3_BUCKET_REGION;
-// console.log(S3_BUCKET_REGION);
+const BUCKET_NAME = process.env.REACT_APP_BUCKET_NAME;
+const S3_BUCKET_REGION = process.env.REACT_APP_S3_BUCKET_REGION;
+console.log(S3_BUCKET_REGION);
 console.log(`SOCKET_SERVER_URL: ${SOCKET_SERVER_URL}`);
 const MainContainer = styled.div`
     width: 100%;
@@ -182,21 +182,38 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
         socketRef.current.emit('contentMsg', contentObj);
     };
 
-    // const uploadImage = async () => {
-    //     const formData = new FormData();
-    //     formData.append('image', file);
-
-    //     try {
-    //       const response = await api.post('/images/upload', formData, {
-    //         headers: {
-    //           'Content-Type': 'multipart/form-data',
-    //         }
-    //       });
-    //       return response.data.data.url; 
-    //     } catch (error) {
-    //       throw error;
-    //     }
-    //   };
+    const uploadImage = async (file) => {
+        try {
+            // const response = await axios.get(`https://18.177.160.174/generate-presigned-url?filename=${encodeURIComponent(file.name)}`);
+            const response = await axios.get(
+                `https://18.177.160.174/api/generate-presigned-url`, {
+                params: {
+                    filename: file.name
+                },
+            });
+            console.log(response.data);
+            const { presignedUrl } = response.data;
+            console.log('presignedUrl: '+presignedUrl);
+            const uploadResponse = await axios.put(presignedUrl, file, {
+                headers: {
+                    'Content-Type': file.type,
+                },
+            });
+            
+            if (uploadResponse.status === 200) {
+                console.log('File successfully uploaded');
+                const imageUrl = `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(file.name)}`;
+                const quill = reactQuillRef.current.getEditor();
+                const range = quill.getSelection();
+                const index = range ? range.index : 0;
+                quill.insertEmbed(index, 'image', imageUrl);
+            } else {
+                console.error('Upload failed');
+            }
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+    };
     const formats = [
         'header',
         'bold',
@@ -212,26 +229,34 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
         'imageBlot' // #5 Optinal if using custom formats
     ];
     const modules = useMemo(() => ({
-        toolbar: [
-            ['bold', 'italic', 'underline', 'strike'],
-            ['blockquote'],
-            [{ header: 1 }, { header: 2 }], // custom button values
-            [{ list: 'ordered' }, { list: 'bullet' }],
-            [{ header: [1, 2, 3, 4, 5, 6, false] }],
-            ['link', 'image'],
-            ["emoji"]
-        ],
-        markdownShortcuts: true
-
-        // imageUploader: {
-        //     upload: (file) => {
-        //         return new Promise((resolve, reject) => {
-        //             setTimeout(() => {
-        //                 resolve('https://source.unsplash.com/FV3GConVSss/900x500');
-        //             }, 3500);
-        //         });
-        //     }
-        // }
+        toolbar: {
+            container: [
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote'],
+                [{ header: 1 }, { header: 2 }], // custom button values
+                [{ list: 'ordered' }, { list: 'bullet' }],
+                [{ header: [1, 2, 3, 4, 5, 6, false] }],
+                ['link', 'image'],
+                ["emoji"]
+            ],
+            handlers: {
+                image: async () => {
+                    const input = document.createElement('input');
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
+                    input.click();
+                    input.onchange = async () => {
+                        const file = input.files[0];
+                        if (file) {
+                            // 调用 uploadImage 函数上传图片
+                            console.log("file~");
+                            await uploadImage(file);
+                        }
+                    };
+                }
+            }
+        },
+        markdownShortcuts: true,
     }), []);
 
 

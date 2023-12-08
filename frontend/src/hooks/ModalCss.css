@@ -1,0 +1,52 @@
+/* Modal.css */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 1000;
+  }
+  
+  .modal-backdrop.open {
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+  }
+  
+  .modal-backdrop.open .modal-content {
+    transform: scale(1);
+  }
+  /* Modal.css */
+/* 其他样式保持不变 */
+
+@keyframes shake {
+  0%, 100% {
+    transform: scale(1) translate(0, 0);
+  }
+  10%, 30%, 50%, 70%, 90% {
+    transform: scale(1.2) translate(-1px, -1px);
+  }
+  20%, 40%, 60%, 80% {
+    transform: scale(1.2) translate(1px, 1px);
+  }
+}
+
+.modal-backdrop.open .modal-content {
+  transform: scale(1);
+  animation: shake 0.5s ease;
+}

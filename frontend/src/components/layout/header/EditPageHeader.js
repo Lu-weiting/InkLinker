@@ -1,10 +1,13 @@
 import styled from 'styled-components';
-import React from 'react';
+import React, { useState } from 'react';
 import EditLogo from '../../../assets/images/editLogo.png'
 import Bell from "../../../assets/images/bell.png";
 import Dots from "../../../assets/images/dots.png";
 import Member from "../../../assets/images/member.png";
-import Swal from "sweetalert2";
+// import Swal from "sweetalert2";
+import ReactTagInput from '@pathofdev/react-tag-input';
+import '@pathofdev/react-tag-input/build/index.css';
+import Modal from '../../../hooks/Modal';
 const HeaderContainer = styled.header`
   top: 0;
   width: 100%;
@@ -51,6 +54,15 @@ const PublishBtn = styled.button`
     align-items: center;
     justify-content: center;
     border: none;
+    font-weight: bold;
+    color: #FFFFFF; 
+    transition: background-color 0.3s ease, color 0.3s ease, font-weight 0.3s ease; // 添加過渡效果
+
+    &:hover {
+        background: #BAA492; 
+        color: black; 
+        cursor: pointer;
+    }
 `;
 const RightSmallSection = styled.div`
     padding: 0 0.8rem;
@@ -65,21 +77,33 @@ const username = 'Tim';
 
 
 const EditHeader = ({ setIsPublished, saveStatus, setTags }) => {
+    const [inputTags, setInputTags] = useState([]);
+    const [isModalOpen, setModalOpen] = useState(false);
+
+    // const handlePublish = () => {
+    //     Swal.fire({
+    //         title: 'Enter Hashtags',
+    //         input: 'text',
+    //         inputAttributes: {
+    //             autocapitalize: 'off'
+    //         },
+    //         showCancelButton: true,
+    //         confirmButtonText: 'Submit',
+    //         showLoaderOnConfirm: true,
+    //         preConfirm: (tags) => {
+    //             setTags(tags.split(' ')); // 分割字符串成標籤數組
+    //             setIsPublished(true);
+    //         }
+    //     });
+    // };
     const handlePublish = () => {
-        Swal.fire({
-            title: 'Enter Hashtags',
-            input: 'text',
-            inputAttributes: {
-                autocapitalize: 'off'
-            },
-            showCancelButton: true,
-            confirmButtonText: 'Submit',
-            showLoaderOnConfirm: true,
-            preConfirm: (tags) => {
-                setTags(tags.split(' ')); // 分割字符串成標籤數組
-                setIsPublished(true);
-            }
-        });
+        setModalOpen(true);
+    };
+
+    const handleModalClose = () => {
+        setModalOpen(false);
+        setTags(inputTags);
+        setIsPublished(true);
     };
     return (
         <HeaderContainer>
@@ -108,6 +132,13 @@ const EditHeader = ({ setIsPublished, saveStatus, setTags }) => {
                 </RightSmallSection>
 
             </RightSection>
+            <Modal isOpen={isModalOpen} onClose={handleModalClose}>
+                <ReactTagInput
+                    tags={inputTags}
+                    onChange={(newTags) => setInputTags(newTags)}
+                    placeholder="Type and press space to add a tag"
+                />
+            </Modal>
         </HeaderContainer>
     );
 };
