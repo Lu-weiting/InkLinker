@@ -5,18 +5,20 @@ const path = require('path');
 const http = require('http');
 const redis = require('./utils/cache');
 const s3Client = require('./utils/s3presign');
-const monitor_router = require('./Router/monitor_router');
 const postRouter = require('./Routers/postRouter');
+const userRouter = require('./Router/userRouter');
 
 
 app.use(cors());
 app.use(express.json());
 app.use('/api/1.0/posts',postRouter);
-app.use('/api/1.0/monitor',monitor_router);
+app.use('/api/1.0/users',userRouter);
+
 app.get('/api/1.0/test', (req, res) => {
     console.log("Hello~~");
     res.send('Hello');
 });
+
 
 
 app.get('/.well-known/pki-validation/444574AA09C845D69B87F522F342F2BB.txt', (req, res) => {

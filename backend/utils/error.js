@@ -38,5 +38,8 @@ module.exports = {
     monitorProblem: (res) => {
         res.status(403).json({ error: 'Monitor problem' });
     },
+    emailFormat: (res) => {
+        res.status(403).json({ error: 'Email format problem' });
+    }
 
 }

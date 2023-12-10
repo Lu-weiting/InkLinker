@@ -1,23 +1,16 @@
 import axios from "axios";
 import sweetAlert from "sweetalert2";
+// import { date } from "yup";
 
-export default async function useLogin(body) {
+export async function loginAPI(body) {
   const api = process.env.REACT_APP_API;
   const apiUrl = `${api}/users/signin`;
   console.log(apiUrl);
 
   try {
     const response = await axios.post(apiUrl, body);
-
-    if (response.status === 200) {
-      // console.log(response.data);
-
-      // 處理獲得的資料
-      return response.data;
-    }
-    console.error("Error:", response.status);
-    // 處理非 200 狀態碼
-    return null;
+    console.log(response.data);
+    return response.data;
   } catch (error) {
     if (error.response) {
       if (error.response.status === 400) {

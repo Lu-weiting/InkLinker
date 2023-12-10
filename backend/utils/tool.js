@@ -1,35 +1,33 @@
-const axios = require('axios');
+const multer = require('multer'); // 引入 multer 套件，用於處理上傳檔案
+const path = require('path');
+const bcrypt = require('bcrypt');
 
-
+require('dotenv').config();
 module.exports = {
-    fetchOrder: async () => {
-        const response = await axios.get('http://35.75.145.100:1234/api/1.0/order/data');
-        const orders = response.data;
-
-        let processedData = [];
-        orders.forEach(order => {
-            order.list.forEach(item => {
-                processedData.push({
-                    price: item.price,
-                    color_code: item.color.code,
-                    color_name: item.color.name,
-                    size: item.size,
-                    qty: item.qty,
-                    product_id: item.id
-                }
-                    
-                );
-            });
+    uploadPicture: () => {
+        //TODO: 驗證副檔名、限制檔案大小
+        const upload = multer({
+            storage: multer.memoryStorage(),
         });
-
-        return processedData;
+        return upload;
     },
-    processColorData: async (dataFromDb) => {
-        const res = {
-            color_code: dataFromDb.map(item => item.color_code),
-            color_name: dataFromDb.map(item => item.color_name),
-            total_count: dataFromDb.map(item => item.total_count),
-        };
-        return res;
-    }
+    checkEmail: async (email) => {
+        const emailRegex = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/;
+        return emailRegex.test(email);
+    },
+    generateHashPassword: async (password) => {
+        const saltRounds = 10;
+        const salt = await bcrypt.genSalt(saltRounds);
+        const hash = await bcrypt.hash(password, salt);
+        return hash;
+    },
+    /**
+     * check the input password
+     * @param {string} input - The input password from client
+     * @param {Object} real - The hashed password in db
+     * @returns {boolean}
+     */
+    confirmPassword: async (input, real) => {
+        return bcrypt.compare(input, real);
+    },
 }
