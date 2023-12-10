@@ -4,13 +4,14 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 export async function signUpAPI(body) {
-    const api = process.env.API_URL;
+    const api = process.env.REACT_APP_API;
     const apiUrl = `${api}/users/signup`;
 
     try {
         const response = await axios.post(apiUrl, body);
-        console.log(response);
-        Swal.fire("註冊成功", "歡迎使用Stylish", "success");
+        console.log(response.data);
+        Swal.fire("註冊成功", "歡迎使用InkLinker", "success");
+        return response.data;
     } catch (error) {
         if (error.response) {
             if (error?.response?.status === 409) {

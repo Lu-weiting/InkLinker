@@ -192,8 +192,10 @@ const LoginSignUpPage = () => {
                 navigate(-1);
             }
         } else {
-            await signUpAPI(userSignUpData);
-            setIsLogin(true);
+            const response = await signUpAPI(userSignUpData);
+            if(response){
+                setIsLogin(true);
+            }
         }
         setIsLoading(false);
     };
