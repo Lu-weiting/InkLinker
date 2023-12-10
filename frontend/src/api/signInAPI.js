@@ -8,6 +8,7 @@ export async function loginAPI(body) {
   console.log(apiUrl);
 
   try {
+    console.log("login data: ",body);
     const response = await axios.post(apiUrl, body);
     console.log(response.data);
     return response.data;
