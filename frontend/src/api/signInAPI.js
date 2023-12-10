@@ -12,30 +12,14 @@ export async function loginAPI(body) {
     return response.data;
   } catch (error) {
     if (error.response) {
-      if (error.response.status === 400) {
-        sweetAlert(
-          "Email or Password incorrect",
-          "Please try again",
-          "error"
-        );
-      } else if (error.response.status === 422) {
-        sweetAlert(
-          "Invalid Email or Password format",
-          "Please try again",
-          "error"
-        );
-      } else if (error.response.status === 403) {
-        sweetAlert(
-          "Email or Password incorrect",
-          "Please try again",
-          "error"
-        );
+      if (error?.response?.status === 403) {
+        Swal.fire("未註冊", `${error}`, "error");
+      }
+      if (error?.response?.status >= 500 && error?.response?.status < 600) {
+        Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
       } else {
-        sweetAlert("An error occurred", "Please try again later", "error");
-        console.error("Error:", error);
+        Swal.fire("註冊失敗", `${error}`, "error");
       }
     }
-    // 處理錯誤
-    return null;
   }
 }
