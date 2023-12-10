@@ -9,7 +9,7 @@ module.exports = {
             //transaction 
             const checkResult = await userRepo.selectUserByEmail(res, userIfoObj.email);
             if (checkResult.length > 0) {
-                return errorMsg.emailExist(res);
+                return null;
             }
 
             await connection.beginTransaction();

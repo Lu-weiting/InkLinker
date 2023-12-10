@@ -52,6 +52,7 @@ const FormContainer = styled.div`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
     padding: 1rem 2rem 2rem 2rem;
     margin-left: 2.2rem;
+    margin-bottom: 2rem;
     width: 80%;
     max-width: 600px
 `;
