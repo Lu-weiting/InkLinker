@@ -6,7 +6,7 @@ export async function loginAPI(body) {
   const api = process.env.REACT_APP_API;
   const apiUrl = `${api}/users/signin`;
   console.log(apiUrl);
-
+  console.log("login data: ",body);
   try {
     console.log("login data: ",body);
     const response = await axios.post(apiUrl, body);
