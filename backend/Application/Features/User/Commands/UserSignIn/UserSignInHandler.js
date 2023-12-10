@@ -15,6 +15,8 @@ module.exports = {
 
         //operation
         const getUserdata = await userService.signIn(res, email);
+        if (getUserdata.length === 0) return errorMsg.noUser(res);
+            
         console.log(getUserdata);
         if (! await tool.confirmPassword(password, getUserdata[0].password)) return errorMsg.wrongPassword(res);
         const accessTokenInfoObj = await auth.generateAccessToken(getUserdata[0].id);

@@ -31,9 +31,9 @@ module.exports = {
     },
     signIn: async (res, email) => {
         const result = await userRepo.selectUserByEmail(res, email);
-        if (result.length === 0) {
-            return errorMsg.noUser(res);
-        }
+        // if (result.length === 0) {
+        //     return errorMsg.noUser(res);
+        // }
         return result;
     },
     getProfile: async (res, userId) => {

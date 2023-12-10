@@ -15,6 +15,7 @@ module.exports = {
     signIn: async(req,res)=>{
         try {
             const { provider , email , password } = req.body;
+            console.log(email);
             const response=await userSignInHandler.handle(res, provider , email , password);
             res.status(200).json(response);
         } catch (error) {
