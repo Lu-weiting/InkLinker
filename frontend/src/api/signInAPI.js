@@ -18,7 +18,8 @@ export async function loginAPI(body) {
       if (error?.response?.status >= 500 && error?.response?.status < 600) {
         Swal.fire("Server Error", "請稍後再試或和我們的技術團隊聯絡", "error");
       } else {
-        Swal.fire("註冊失敗", `${error}`, "error");
+        console.log(error.response.status);
+        Swal.fire("登入失敗", `${error}`, "error");
       }
     }
   }
