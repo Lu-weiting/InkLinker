@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const errorMsg = require('./error');
-const roleService = require('../Service/roleService');
+const roleService = require('../Service/roleService')
 require('dotenv').config();
 module.exports = {
     generateAccessToken: async (userId) => {
@@ -43,13 +43,6 @@ module.exports = {
                 const roles = await roleService.checkRole(res, loginUserId);
                 if (roles.length === 0) return errorMsg.roleProblem(res);
                 const flag = roles.some((role) => role.name == requiredRole);
-                // let flag = false;
-                // console.log(roles[0].name);
-                // roles.forEach((role) => {
-                //     if (role.name == requiredRole) {
-                //         flag = true;
-                //     }
-                // });
                 if (flag) {
                     next();
                 } else {
