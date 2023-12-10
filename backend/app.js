@@ -6,7 +6,7 @@ const http = require('http');
 const redis = require('./utils/cache');
 const s3Client = require('./utils/s3presign');
 const postRouter = require('./Routers/postRouter');
-const userRouter = require('./Router/userRouter');
+const userRouter = require('./Routers/userRouter');
 
 
 app.use(cors());
