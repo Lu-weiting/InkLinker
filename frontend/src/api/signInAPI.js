@@ -1,5 +1,5 @@
 import axios from "axios";
-import sweetAlert from "sweetalert2";
+import Swal from "sweetalert2";
 // import { date } from "yup";
 
 export async function loginAPI(body) {
