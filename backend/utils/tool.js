@@ -1,6 +1,7 @@
 const multer = require('multer'); // 引入 multer 套件，用於處理上傳檔案
 const path = require('path');
 const bcrypt = require('bcrypt');
+const CryptoJS = require('crypto-js');
 
 require('dotenv').config();
 module.exports = {
@@ -30,4 +31,13 @@ module.exports = {
     confirmPassword: async (input, real) => {
         return bcrypt.compare(input, real);
     },
+    encryptCursor: async (cursor) => {
+        const encrypted = CryptoJS.AES.encrypt(cursor.toString(), process.env.SECRET).toString();
+        return encrypted;
+    },
+    decryptCursor: async (encryptedCursor) => {
+      const decryptedBytes = CryptoJS.AES.decrypt(encryptedCursor, process.env.SECRET);
+      const decryptedCursor = decryptedBytes.toString(CryptoJS.enc.Utf8);
+      return parseInt(decryptedCursor, 10);
+    }
 }

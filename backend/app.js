@@ -7,12 +7,14 @@ const redis = require('./utils/cache');
 const s3Client = require('./utils/s3presign');
 const postRouter = require('./Routers/postRouter');
 const userRouter = require('./Routers/userRouter');
+const hashtagsRouter = require('./Routers/hashTagRouter');
 
 
 app.use(cors());
 app.use(express.json());
 app.use('/api/1.0/posts',postRouter);
 app.use('/api/1.0/users',userRouter);
+app.use('/api/1.0/hashtags',hashtagsRouter);
 
 app.get('/api/1.0/test', (req, res) => {
     console.log("Hello~~");
