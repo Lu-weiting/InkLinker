@@ -14,10 +14,11 @@ module.exports = {
                     content: searchResult[i].content,
                     main_category: searchResult[i].main_category,
                     created_at: searchResult[i].created_at,
+                    img_url: searchResult[i].image_url,
                     author: {
                         id: searchResult[i].uid,
                         name: searchResult[i].userName,
-                        avator: searchResult[i].avator
+                        avatar: searchResult[i].avatar
                     }
                 }
                 resultArray.push(post);

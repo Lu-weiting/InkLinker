@@ -17,7 +17,7 @@ module.exports = {
         try {
 
             const selectQuery = `
-                SELECT p.id, p.title , u.id AS uid, u.name AS authorName, u.avator
+                SELECT p.id, p.title , u.id AS uid, u.name AS authorName, u.avatar
                 FROM posts p INNER JOIN users u ON p.user_id = u.id
                 ORDER BY like_count DESC
                 LIMIT ${number};
@@ -42,7 +42,8 @@ module.exports = {
                     P.*,
                     U.id AS uid,
                     U.name AS userName,
-                    U.avator AS avator
+                    U.avatar AS avatar,
+                    (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS first_image_url
                 FROM posts AS P
                 LEFT JOIN users AS U ON P.user_id = U.id 
                 WHERE P.status = ? AND P.is_active = ? AND P.title LIKE ? AND P.id < ?
@@ -63,16 +64,17 @@ module.exports = {
         const connection = connectionPromise;
         try {
             const selectQuery = `
-                SELECT 
-                    P.*,
-                    U.id AS uid,
-                    U.name AS userName,
-                    U.avator AS avator
-                FROM posts AS P
-                LEFT JOIN users AS U ON P.user_id = U.id 
-                WHERE P.status = ? AND P.is_active = ? AND P.id < ?
-                ORDER BY P.id DESC
-                LIMIT ?
+            SELECT 
+            P.*,
+            U.id AS uid,
+            U.name AS userName,
+            U.avatar AS avatar,
+            (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS first_image_url
+            FROM posts AS P
+            LEFT JOIN users AS U ON P.user_id = U.id
+            WHERE P.status = ? AND P.is_active = ? AND P.id < ?
+            ORDER BY P.id DESC
+            LIMIT ?
             `;
             
             const [result] = await connection.execute(selectQuery, ['published', 1, decodeCurser, limit]);
@@ -91,13 +93,13 @@ module.exports = {
             let startIndex = decodeCurser == Math.pow(2, 64) ? 0 : sortedArticleIds.indexOf(decodeCurser);
             let pagedArticleIds = sortedArticleIds.slice(startIndex, startIndex + limit);
 
-            // SQL 查询获取文章详细信息
             const selectQuery = `
                 SELECT 
                     P.*,
                     U.id AS uid,
                     U.name AS userName,
-                    U.avator AS avator
+                    U.avatar AS avatar,
+                    (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS image_url
                 FROM posts AS P
                 LEFT JOIN users AS U ON P.user_id = U.id 
                 WHERE P.id IN (?)
