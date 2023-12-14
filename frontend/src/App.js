@@ -34,6 +34,7 @@ function App() {
                         <Route element={<LoginRoute />}>
                             <Route path="/login" element={<LoginSignUpPage />} />
                         </Route>
+                        
                         <Route path="/edit" element={<EditPage endpoint="edit" />} />
                         {/* <Route element={<PrivateRoute />}>
               <Route path="/user" element={<ProfilePage />} />

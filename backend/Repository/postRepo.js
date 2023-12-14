@@ -43,7 +43,7 @@ module.exports = {
                     U.id AS uid,
                     U.name AS userName,
                     U.avatar AS avatar,
-                    (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS first_image_url
+                    (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS image_url
                 FROM posts AS P
                 LEFT JOIN users AS U ON P.user_id = U.id 
                 WHERE P.status = ? AND P.is_active = ? AND P.title LIKE ? AND P.id < ?
@@ -65,19 +65,20 @@ module.exports = {
         try {
             const selectQuery = `
             SELECT 
-            P.*,
-            U.id AS uid,
-            U.name AS userName,
-            U.avatar AS avatar,
-            (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS first_image_url
+                P.*,
+                U.id AS uid,
+                U.name AS userName,
+                U.avatar AS avatar,
+                (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS image_url
             FROM posts AS P
             LEFT JOIN users AS U ON P.user_id = U.id
             WHERE P.status = ? AND P.is_active = ? AND P.id < ?
             ORDER BY P.id DESC
             LIMIT ?
             `;
-            
+            console.log("solve pro~~~");
             const [result] = await connection.execute(selectQuery, ['published', 1, decodeCurser, limit]);
+
             return result;
         } catch (error) {
             console.error(error);

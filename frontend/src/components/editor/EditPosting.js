@@ -64,6 +64,7 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
     const [title, setTitle] = useState(initialTitleObj.title);
     const [text, setText] = useState(initialContentObj.content);
     const [markdown, setMarkdown] = useState("");
+    const [mainImg , setMainImg] = useState();
     const [isOnline, setIsOnline] = useState(navigator.onLine);
     
     
@@ -123,7 +124,8 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
                     const response = await axios.post(`${API_ENDPOINT}/posts/create`, {
                         title,
                         content: text,
-                        tags
+                        tags,
+                        mainImg: mainImg[0]
                     });
                     //sweet alert
                     console.log('Content published:', response.data);
@@ -203,6 +205,7 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             if (uploadResponse.status === 200) {
                 console.log('File successfully uploaded');
                 const imageUrl = `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(file.name)}`;
+                setMainImg(prevUrls => [...prevUrls, imageUrl]);
                 const quill = reactQuillRef.current.getEditor();
                 const range = quill.getSelection();
                 const index = range ? range.index : 0;
