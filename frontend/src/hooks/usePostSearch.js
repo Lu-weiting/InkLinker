@@ -71,6 +71,7 @@ export default function usePostSearch() {
             if (response.status === 200) {
                 // eslint-disable-next-line consistent-return
                 console.log(response);
+                console.log(response?.data.data.posts);
                 return [response?.data.data.posts, response?.data.data.next_cursor];
             }
             console.error("Error:", response.status);

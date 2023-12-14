@@ -53,6 +53,7 @@ const TitleInput = styled.input`
   }
 `;
 const post_id = 1;
+//TODO
 //先判斷localstorage中的status是yes or no，可以得之是不是地一次進入
 //第一次進入頁面==>戳後端createAPI(draft)得到postId之後localstorage就有根據存放
 

@@ -6,7 +6,7 @@ module.exports = {
         for (let i = 0; i < result.length; i++) {
             let res = {
                 id: result[i].id,
-                title: result[i].title,
+                name: result[i].name,
             };
             totalData.push(res);
         }
