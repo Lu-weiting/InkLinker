@@ -29,6 +29,8 @@ export default function UserHomePage() {
       try {
         if (conditionNum < 1) {
           const [data, cursor] = await fetchPosts();
+          consolo.log("posts:",data);
+          consolo.log("cursor:",cursor);
           setPosts(data);
           setNextCursor(cursor);
           setPostFetchMode("cursor");
@@ -36,6 +38,8 @@ export default function UserHomePage() {
           return;
         }
         const [data, cursor] = await fetchPosts("", null, conditions);
+        consolo.log("posts2:",data);
+        consolo.log("cursor2:",cursor);
         setPosts(data);
         setNextCursor(cursor);
         setPostFetchMode("cursor");
