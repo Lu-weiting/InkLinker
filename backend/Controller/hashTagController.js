@@ -1,5 +1,5 @@
 
-const getTopHashTagsHandler = require("../Application/Features/")
+const getTopHashTagsHandler = require("../Application/Features/HashTag/Queries/GetTopHashTags/GetTopHashTagsHandler");
 module.exports = {
     
     getTopHashTags: async(req,res)=>{
