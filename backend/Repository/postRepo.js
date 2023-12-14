@@ -72,7 +72,7 @@ module.exports = {
                 (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS image_url
             FROM posts AS P
             LEFT JOIN users AS U ON P.user_id = U.id
-            WHERE P.status = ? AND P.is_active = ? AND P.id < ?
+            WHERE (P.status = ?) AND (P.is_active = ?) AND (P.id < ?)
             ORDER BY P.id DESC
             LIMIT ?
             `;

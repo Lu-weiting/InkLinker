@@ -1,18 +1,18 @@
-
+// const 
 const getPopularPostHandler = require('../Application/Features/Post/Queries/GetPopularPost/GetPopularPostHandler');
 const randomSearchHandler = require('../Application/Features/Post/Queries/RandomSearch/RandomSearchHandler');
 const recommandSearchHandler = require('../Application/Features/Post/Queries/RecommandSearch/RecommandSearchHandler');
 module.exports = {
-    // createPost: async(req, res)=>{
-    //     try {
-    //         const { data } = req.body;
-    //         console.log(data);
-    //         const response=await createPostHandler.handle(res,data,uploadedPictures);
-    //         res.status(200).json(response);
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // },
+    createPost: async(req, res)=>{
+        try {
+            const { data } = req.body;
+            console.log(data);
+            const response=await createPostHandler.handle(res,data);
+            res.status(200).json(response);
+        } catch (error) {
+            console.log(error)
+        }
+    },
     getTopPost: async (req, res) => {
         try {
             const { number } = req.query;
