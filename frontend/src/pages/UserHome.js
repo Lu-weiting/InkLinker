@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import usePostSearch from "../hooks/usePostSearch";
 
-import CommonHeader from "../components/layout/header/commonHeader";
+import CommonHeader from "../components/layout/header/CommonPageHeader";
 import OverviewGroup from "../components/loginHome/Main";
 
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
