@@ -77,8 +77,11 @@ module.exports = {
             LIMIT ?
             `;
             console.log("solve pro~~~");
+            console.log("decodeCurser",decodeCurser);
+            console.log("limit",limit);
             const [result] = await connection.execute(selectQuery, ['published', 1, decodeCurser, limit]);
 
+            console.log("solve pro2~~~");
             return result;
         } catch (error) {
             console.error(error);

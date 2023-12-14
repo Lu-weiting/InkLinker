@@ -25,7 +25,6 @@ module.exports = {
     randomSearch: async (req, res) => {
         try {
             const my_id = req.decodedToken.id;
-            console.log(my_id);
             const { title , cursor } = req.query;
             const result = await randomSearchHandler.handle(res, cursor ? cursor : null ,title ? title : null ,my_id);
             res.status(200).json(result);
