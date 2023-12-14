@@ -1,5 +1,7 @@
 
 const getPopularPostHandler = require('../Application/Features/Post/Queries/GetPopularPost/GetPopularPostHandler');
+const randomSearchHandler = require('../Application/Features/Post/Queries/RandomSearch/RandomSearchHandler');
+const recommandSearchHandler = require('../Application/Features/Post/Queries/RecommandSearch/RecommandSearchHandler');
 module.exports = {
     // createPost: async(req, res)=>{
     //     try {
@@ -25,12 +27,24 @@ module.exports = {
             const my_id = req.decodedToken.id;
             console.log(my_id);
             const { title , cursor } = req.query;
-            const result = await tasksModel.homeSearch(res, cursor ? cursor : null ,title ? title : null ,my_id);
+            const result = await randomSearchHandler.handle(res, cursor ? cursor : null ,title ? title : null ,my_id);
             res.status(200).json(result);
         } catch (error) {
             console.log(error)
         }
     },
+    recommandSearch: async (req, res) => {
+        try {
+            const my_id = req.decodedToken.id;
+            console.log(my_id);
+            const { cursor } = req.query;
+            const result = await recommandSearchHandler.handle(res, cursor ? cursor : null ,my_id);
+
+            res.status(200).json(result);
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
 
 }

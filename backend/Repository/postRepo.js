@@ -34,7 +34,7 @@ module.exports = {
             console.log('connection release');
         }
     },
-    searchPostByTitle: async (res, title, decodeCurser , limit) => {
+    searchPostByTitle: async (res, title, decodeCurser, limit) => {
         const connection = connectionPromise;
         try {
             const selectQuery = `
@@ -50,7 +50,7 @@ module.exports = {
                 LIMIT ?
             `;
 
-            const [result] = await connection.execute(selectQuery,['published',1,`%${title}%`,decodeCurser,limit]);
+            const [result] = await connection.execute(selectQuery, ['published', 1, `%${title}%`, decodeCurser, limit]);
             return result;
         } catch (error) {
             console.error(error);
@@ -59,7 +59,7 @@ module.exports = {
             console.log('connection release');
         }
     },
-    searchByNoCondition: async (res, decodeCurser , limit) => {
+    searchByNoCondition: async (res, decodeCurser, limit) => {
         const connection = connectionPromise;
         try {
             const selectQuery = `
@@ -74,7 +74,39 @@ module.exports = {
                 ORDER BY P.id DESC
                 LIMIT ?
             `;
-            const [result] = await connection.execute(selectQuery,['published',1,decodeCurser,limit]);
+            
+            const [result] = await connection.execute(selectQuery, ['published', 1, decodeCurser, limit]);
+            return result;
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res)
+        } finally {
+            console.log('connection release');
+        }
+    },
+    searchPostByRecommand: async (res, userRecommendations, recommandRedisKey,decodeCurser, limit) => {
+        const connection = connectionPromise;
+        try {
+            let sortedArticleIds = userRecommendations.map(item => item.articleId);
+            let startIndex = decodeCurser == Math.pow(2, 64) ? 0 : sortedArticleIds.indexOf(decodeCurser);
+            let pagedArticleIds = sortedArticleIds.slice(startIndex, startIndex + limit);
+
+            // SQL 查询获取文章详细信息
+            const selectQuery = `
+                SELECT 
+                    P.*,
+                    U.id AS uid,
+                    U.name AS userName,
+                    U.avator AS avator
+                FROM posts AS P
+                LEFT JOIN users AS U ON P.user_id = U.id 
+                WHERE P.id IN (?)
+                ORDER BY FIELD(P.id, ?)
+            `;
+            const [result] = await connection.execute(selectQuery, [pagedArticleIds, pagedArticleIds]);
+            if (recommandRedisKey != '') {
+                await redis.updateCache(recommandRedisKey, result);
+            }
             return result;
         } catch (error) {
             console.error(error);
@@ -83,8 +115,8 @@ module.exports = {
             console.log('connection release');
         }
     }
-    
-    
+
+
 
 
 }

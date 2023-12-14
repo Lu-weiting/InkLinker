@@ -47,6 +47,7 @@ const io = require("socket.io")(server, {
         origin: "*",
     },
 });
+
 io.on('connection', (socket) => {
     console.log('New client connected');
 

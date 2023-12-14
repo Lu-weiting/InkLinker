@@ -8,6 +8,7 @@ const postController = require('../Controller/postController');
 router.get('/popular' ,postController.getTopPost);
 // User get search tasks API
 router.get('/search',auth.verifyToken , postController.randomSearch);
+router.get('/recommandSearch',auth.verifyToken , postController.recommandSearch);
 
 
 

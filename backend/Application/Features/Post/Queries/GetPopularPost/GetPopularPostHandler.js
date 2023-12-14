@@ -18,7 +18,7 @@ module.exports = {
         }else{
             result = cacheObj;
         }
-        response = getPopularPostRes.customize(res,topPosts);
+        response = await getPopularPostRes.customize(res,result);
         return response;
     }
 }

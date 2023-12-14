@@ -18,7 +18,7 @@ module.exports = {
         }else{
             result = cacheObj;
         }
-        response = getTopHashTagsRes.customize(res,topPosts);
+        response = await getTopHashTagsRes.customize(res,topPosts);
         return response;
     }
 }

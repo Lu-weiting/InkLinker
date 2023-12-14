@@ -17,5 +17,12 @@ module.exports = {
 
         return result;
     },
+    searchInRecommand: async (res, userRecommendations ,recommandRedisKey,decodeCurser , limit) => {
+        
+        const result = await postRepo.searchPostByRecommand(res,userRecommendations, recommandRedisKey,decodeCurser , limit);
+
+        return result;
+    },
+
 
 }

@@ -18,7 +18,7 @@ module.exports = {
         }
         const searchResult = await postService.searchInRandom(res, decodeCurser, title ,limit)
         
-        response = randomSearchRes.customize(res,searchResult,limit);
+        response = await randomSearchRes.customize(res,searchResult,limit);
         return response;
     }
 }

@@ -11,6 +11,8 @@ services:
         - .env
       networks:
         - inklinker_network
+      volumes:
+        - model_data:/app/model
 
   inklinker_frontend:
       build: 
@@ -49,6 +51,8 @@ services:
     depends_on:
       - inklinker_backend
 
+volumes:
+  model_data:
 
 networks:
   inklinker_network:   
