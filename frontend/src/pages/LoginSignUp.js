@@ -190,7 +190,7 @@ const LoginSignUpPage = () => {
             if (response) {
                 const { access_token, user } = response.data;
                 setCookies({ access_token, user });
-                navigate(-1);
+                navigate("/");
             }
         } else {
             const response = await signUpAPI(userSignUpData);

@@ -239,7 +239,7 @@ export default function OverviewGroup({ posts, showStatus = false }) {
                 <PostHead>
                     <Avatar
                         alt="author"
-                        src={post.author.avator ? post.author.avator : member}
+                        src={post.author.avatar ? post.author.avatar : member}
                         sx={{ width: 20, height: 20 }}
                     />
                     <PosterName>{post.author.name}</PosterName>
