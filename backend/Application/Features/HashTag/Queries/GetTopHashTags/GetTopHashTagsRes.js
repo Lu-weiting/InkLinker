@@ -7,17 +7,12 @@ module.exports = {
             let res = {
                 id: result[i].id,
                 title: result[i].title,
-                author: {
-                    id: result[i].uid,
-                    name: result[i].authorName,
-                    avator: result[i].avator
-                }
             };
             totalData.push(res);
         }
         response = {
             data: {
-                posts: totalData
+                hashtags: totalData
             }
         };
         return response;
