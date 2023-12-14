@@ -10,7 +10,7 @@ export default function usePostSearch() {
     let thereIsCondition = false;
 
     const apiProcess = (mode = "", cursor = 0, conditions = null , userId = null) => {
-        let api = process.env.REACT_API;
+        let api = process.env.REACT_APP_API;
         let apiUrl = `${api}/posts/search?`;
         if (!conditions) {
             if (mode === "cursor") {
