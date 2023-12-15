@@ -6,9 +6,13 @@ const recommandSearchHandler = require('../Application/Features/Post/Queries/Rec
 module.exports = {
     createPost: async(req, res)=>{
         try {
-            const { data } = req.body;
+            const { title,content } = req.body;
             const my_id = req.decodedToken.id;
-            console.log(data);
+            console.log(title);
+            const data = {
+                title: title,
+                content: content
+            }
             const response=await createPostHandler.handle(res,data,my_id);
             res.status(200).json(response);
         } catch (error) {

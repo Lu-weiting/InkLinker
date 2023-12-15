@@ -6,7 +6,7 @@ module.exports = {
     handle: async (res, data ,my_id) => {
         //init
         let response = null;
-
+        
         //check 
         if(data.title === null || data.content === null){
             return errorMsg.inputEmpty(res);
@@ -14,7 +14,7 @@ module.exports = {
         //operation
 
         const result = await postService.initPost(res,data,my_id);
-        
+
 
         response = await createPostRes.customize(result);
         return response;
