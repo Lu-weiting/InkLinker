@@ -35,7 +35,7 @@ function App() {
                             <Route path="/login" element={<LoginSignUpPage />} />
                         </Route>
 
-                        <Route path="/edit:post_id" element={<EditPage />} />
+                        <Route path="/edit/:post_id" element={<EditPage />} />
                         {/* <Route element={<PrivateRoute />}>
               <Route path="/user" element={<ProfilePage />} />
               <Route path="/thankyou" element={<ThankyouPage />} />
