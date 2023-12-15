@@ -14,7 +14,7 @@ export default function UserHomePage() {
   const [nextCursor, setNextCursor] = useState(0);
   const [postFetchMode, setPostFetchMode] = useState(""); // ["user_id", "cursor", "user_cursor"]
   const [fetchPosts] = usePostSearch();
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState([]);
   const [isLoadMorePosts, setIsLoadMorePosts] = useState(false);
 
   const dispatch = useDispatch();
