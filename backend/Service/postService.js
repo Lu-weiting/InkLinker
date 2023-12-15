@@ -1,5 +1,9 @@
 const connectionPromise = require('../utils/db').connectionPromise;
 const postRepo = require('../Repository/postRepo');
+const imageRepo = require('../Repository/imageRepo');
+const hashTagRepo = require('../Repository/hashTagRepo');
+const categoryRepo = require('../Repository/categoryRepo');
+
 // const tool = require('../utils/tool');
 module.exports = {
     initPost: async (res, data , userId) => {
@@ -9,15 +13,25 @@ module.exports = {
     updatePost: async (res, data , userId) => {
         const connection = await connectionPromise.getConnection();
         try {
-            //transaction 
-
             await connection.beginTransaction();
-            const insertResult = await postRepo.updatePost(res, data, userId,connection);
-            
-            await roleRepo.addRoleToUser(res, 2 , insertResult.insertId , connection);
+            await postRepo.updatePost(res, data, userId,connection);
+            //transaction 
+            for(let i = 0 ; i < data.tags.length ; i++){
+                let hashTag = await hashTagRepo.getHashTagByName(data.tags[i])
+                if(hashTag.length === 0){
+                    await hashTagRepo.updateHashTag(res,hashTag[0].id,connection);
+                    await hashTagRepo.insertPostHashTag(res,data.post_id,hashTag[0].id,connection);
+                }else{
+                    const newHashtag = await hashTagRepo.insertHashTag(res,data.tags[i] , connection);
+                    await hashTagRepo.insertPostHashTag(res,data.post_id,newHashtag.insertId,connection);
+                }
+            }
+            await imageRepo.insertPic(res,data,connection);
+            const category = await categoryRepo.getCategoryByName(res,data.tags[0]);
+            if(category.length === 0){
+                await categoryRepo.insertCategory(res,data.tags[0],connection);
+            }
             await connection.commit();
-
-            return insertResult;
 
         } catch (error) {
             await connection.rollback();

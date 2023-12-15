@@ -1,6 +1,6 @@
 const tool = require('../../../../../utils/tool');
 const postService = require('../../../../../Service/postService');
-const createPostRes = require('./UpdatePostRes');
+const updatePostRes = require('./UpdatePostRes');
 const errorMsg = require('../../../../../utils/error');
 module.exports = {
     handle: async (res, data ,my_id) => {
@@ -12,10 +12,10 @@ module.exports = {
             return errorMsg.inputEmpty(res);
         }
         //operation
-        const result = await postService.updatePost(res,data,my_id);
+        await postService.updatePost(res,data,my_id);
         
 
-        response = await createPostRes.customize(result);
+        await updatePostRes.customize(data.post_id);
         return response;
     }
 }

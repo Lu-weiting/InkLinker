@@ -21,5 +21,35 @@ module.exports = {
         } finally {
             console.log('connection release');
         }
-    }
+    },
+    getCategoryByName: async (res, name) => {
+        const connection = connectionPromise;
+        try {
+
+            const selectQuery = `
+                SELECT id
+                FROM main_categories
+                WHERE name = ?
+            `;
+            const [result] = await connection.execute(selectQuery,[name]);
+            
+            return result;
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res)
+        } finally {
+            console.log('connection release');
+        }
+    },
+    insertCategory: async(res,name, connection)=>{
+        try {
+            // const {name , email, hashedPassword , provider , avator} = userInfoObj;
+            const query = 'INSERT INTO main_categories(name) VALUES(?)';
+            const [result] = await connection.execute(query, [name]); 
+            return result;     
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
+    },
 }

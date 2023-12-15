@@ -21,12 +21,11 @@ module.exports = {
             console.log('connection release');
         }
     },
-    updatePost: async(res,data , userId, connection)=>{
+    updatePost: async(res, data , userId, connection)=>{
         try {
-            const {title , content,  , provider , avator} = data;
-            const signupQuery = 'INSERT INTO users(name, email, password, provider , avatar , isActive) VALUES(?,?,?,?,?,?)';
-            const [result] = await connection.execute(signupQuery, [name, email, hashedPassword, provider , avator , 1]); 
-            return result;     
+            const {title , content, post_id , tags} = data;
+            const query = 'UPDATE posts SET title = ?, content = ?, main_category = ? WHERE user_id = ? AND id = ?';
+            await connection.execute(query, [title , content , tags[0], userId , post_id]);      
         } catch (error) {
             console.error(error);
             errorMsg.query(res);

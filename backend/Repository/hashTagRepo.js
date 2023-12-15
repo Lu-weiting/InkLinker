@@ -32,6 +32,57 @@ module.exports = {
         } finally {
             console.log('connection release');
         }
+    },
+    getHashTagByName: async (res, name) => {
+        const connection = connectionPromise;
+        try {
+
+            const selectQuery = `
+                SELECT id
+                FROM hash_tags
+                WHERE name = ?
+            `;
+            const [result] = await connection.execute(selectQuery,[name]);
+            
+            return result;
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res)
+        } finally {
+            console.log('connection release');
+        }
+    },
+    insertHashTag: async(res,name, connection)=>{
+        try {
+            // const {name , email, hashedPassword , provider , avator} = userInfoObj;
+            const query = 'INSERT INTO hash_tags(name) VALUES(?)';
+            const [result] = await connection.execute(query, [name]); 
+            return result;     
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
+    },
+    insertPostHashTag: async(res,post_id,tag_id, connection)=>{
+        try {
+            // const {name , email, hashedPassword , provider , avator} = userInfoObj;
+            const query = 'INSERT INTO post_hash_tags(post_id, hash_tag_id) VALUES(?,?)';
+            const [result] = await connection.execute(query, [post_id,tag_id]); 
+            return result;     
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
+    },
+    updateHashTag: async(res, id,connection)=>{
+        try {
+            // const {name , email, hashedPassword , provider , avator} = userInfoObj;
+            const query = 'UPDATE hash_tags SET mapping_count = mapping_count+1 WHERE id = ?';
+            await connection.execute(query, [id]); 
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
     }
     
     
