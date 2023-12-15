@@ -7,7 +7,7 @@ const postService = require('../../../../../Service/postService');
 const mlModelService = require('../../../../../Service/mlModelService');
 const categoryService = require('../../../../../Service/categoryService');
 
-const {dataProcessor} = require('../../../../../utils/dataProcessor');
+const dataProcessor = require('../../../../../utils/dataProcessor');
 const {modelDefinition} = require('../../../../../utils/modelDefinition');
 const {modelTraining} = require('../../../../../utils/modelTraining');
 const {recommendationGenerator} = require('../../../../../utils/recommendationGenerator');
@@ -59,14 +59,14 @@ module.exports = {
             }else{
                 const encodeCategory = await createOneHotEncoder();
                 const trainModelData = await mlModelService.getTrainModelData(res,trainningRedisKey);
-                console.log("transformedData:",trainModelData);
+                // console.log("transformedData:",trainModelData);
                 const tData = trainModelData.map(item => {
                     return {
                         ...item,
                         category: encodeCategory(item.category)
                     };
                 });
-                // console.log("transformedData:",tData);
+                console.log("transformedData:",tData);
                 queryResults = tData;
             }
             // 数据处理

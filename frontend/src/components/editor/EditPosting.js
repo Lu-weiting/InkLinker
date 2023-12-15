@@ -62,7 +62,7 @@ const TitleInput = styled.input`
 
 
 
-
+const token= Cookies.get('token');
 const EditMain = ({ isPublished, setSaveStatus, tags }) => {
 
     const params = useParams();
@@ -135,12 +135,16 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
             // 當 isPublished 變為 true 時執行
             const publishContent = async () => {
                 try {
-                    const response = await axios.put(`${API_ENDPOINT}/posts/updateStatus`, {
+                    const response = await axios.put(`${API_ENDPOINT}/posts/update`, {
                         title,
                         content: text,
                         tags,
                         mainImg: mainImg[0],
                         post_id: postId
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`
+                        }
                     });
                     //sweet alert
                     console.log('Content published:', response.data);
