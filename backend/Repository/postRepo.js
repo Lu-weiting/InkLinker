@@ -21,6 +21,17 @@ module.exports = {
             console.log('connection release');
         }
     },
+    updatePost: async(res,data , userId, connection)=>{
+        try {
+            const {title , content,  , provider , avator} = data;
+            const signupQuery = 'INSERT INTO users(name, email, password, provider , avatar , isActive) VALUES(?,?,?,?,?,?)';
+            const [result] = await connection.execute(signupQuery, [name, email, hashedPassword, provider , avator , 1]); 
+            return result;     
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
+    },
     /**
      * Implement Read/Write Through strategy
      * @param {Object} res - The obj response for client

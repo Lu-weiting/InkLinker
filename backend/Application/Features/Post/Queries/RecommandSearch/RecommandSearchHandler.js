@@ -11,7 +11,7 @@ const dataProcessor = require('../../../../../utils/dataProcessor');
 const modelDefinition = require('../../../../../utils/modelDefinition');
 const modelTraining = require('../../../../../utils/modelTraining');
 const recommendationGenerator = require('../../../../../utils/recommendationGenerator');
-const createOneHotEncoder = require('../../../../../utils/categoryEncoder');
+const {createOneHotEncoder} = require('../../../../../utils/categoryEncoder');
 
 const recommandSearchRes = require('./RecommandSearchRes');
 module.exports = {
