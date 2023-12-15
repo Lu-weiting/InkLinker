@@ -20,6 +20,7 @@ export default function usePostSearch() {
         }
 
         const { title, num , tabKey} = conditions;
+        console.log("conditions",conditions);
 
         if (num < 1) {
             apiUrl = `${api}/posts/search`;
