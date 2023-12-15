@@ -8,12 +8,11 @@ module.exports = {
         let response = null;
 
         //check 
-        if(data.title === null || data.content === null){
+        if(data.title === null || data.content === null || data.post_id === null){
             return errorMsg.inputEmpty(res);
         }
         //operation
-
-        const result = await postService.initPost(res,data,my_id);
+        const result = await postService.updatePost(res,data,my_id);
         
 
         response = await createPostRes.customize(result);

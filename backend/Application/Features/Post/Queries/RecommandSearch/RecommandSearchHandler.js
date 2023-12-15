@@ -8,10 +8,10 @@ const mlModelService = require('../../../../../Service/mlModelService');
 const categoryService = require('../../../../../Service/categoryService');
 
 const dataProcessor = require('../../../../../utils/dataProcessor');
-const {modelDefinition} = require('../../../../../utils/modelDefinition');
-const {modelTraining} = require('../../../../../utils/modelTraining');
-const {recommendationGenerator} = require('../../../../../utils/recommendationGenerator');
-const { createOneHotEncoder } = require('../../../../../utils/categoryEncoder');
+const modelDefinition = require('../../../../../utils/modelDefinition');
+const modelTraining = require('../../../../../utils/modelTraining');
+const recommendationGenerator = require('../../../../../utils/recommendationGenerator');
+const createOneHotEncoder = require('../../../../../utils/categoryEncoder');
 
 const recommandSearchRes = require('./RecommandSearchRes');
 module.exports = {

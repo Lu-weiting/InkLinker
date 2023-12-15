@@ -1,5 +1,5 @@
 // dataProcessor.js
-
+const tf = require('@tensorflow/tfjs-node');
 function createIndexMappings(queryResults) {
     const uniqueUserIds = Array.from(new Set(queryResults.map(item => item.user_id)));
     const uniqueArticleIds = Array.from(new Set(queryResults.map(item => item.post_id)));
