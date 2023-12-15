@@ -10,6 +10,7 @@ import CommonLogo from '../../../assets/images/editLogo.png'
 import Bell from "../../../assets/images/bell.png";
 import Member from "../../../assets/images/member.png";
 import WriteImg from "../../../assets/images/write.png"
+const api = process.env.REACT_APP_API;
 
 
 const HeaderContainer = styled.header`
@@ -114,7 +115,7 @@ const CommonHeader = () => {
         }
 
         try {
-            const response = await axios.post('/posts/createdPost', {
+            const response = await axios.post(`${api}/posts/create`, {
                 title: 'draft',
                 content: 'draft'
             }, {
