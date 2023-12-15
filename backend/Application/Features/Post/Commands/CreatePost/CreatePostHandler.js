@@ -6,26 +6,16 @@ module.exports = {
     handle: async (res, data ,my_id) => {
         //init
         let response = null;
-        const data_json = JSON.parse(data);
 
         //check 
-        if(data_json.sizes === null || data_json.images === null){
+        if(data.title === null || data.content === null){
             return errorMsg.inputEmpty(res);
         }
         //operation
-        
-        const mainImage = uploadedPictures['main_image'][0];
-        console.log(mainImage);
-        const otherImages = uploadedPictures['other_images'];
-        if(!otherImages || !mainImage) return errorMsg.inputEmpty(res);
-        
-        const mainImageUrl = await tool.uploadToS3(mainImage);
-        const otherImageUrls = await Promise.all(otherImages.map(tool.uploadToS3));
-        console.log("檔案全部上傳到S3成功");
 
-        const result = await productService.insertNewProduct(res,data_json,mainImageUrl,otherImageUrls);
+        const result = await postService.
 
-        response = await createProductResponse.customize(result);
+        response = await createPostRes.customize(result);
         return response;
     }
 }

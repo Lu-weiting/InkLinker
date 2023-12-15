@@ -7,6 +7,11 @@ module.exports = {
         if (result.length == 0) return res.status(403).json("product doesn't exist");
         return result;
     },
+    getTopPosts: async (res, number,postRedisKey) => {
+        const result = await postRepo.getTopPosts(res, number, postRedisKey);
+        if (result.length == 0) return res.status(403).json("product doesn't exist");
+        return result;
+    },
     searchInRandom: async (res, decodeCurser , title , limit) => {
         
         if(title == null){

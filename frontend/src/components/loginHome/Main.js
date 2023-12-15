@@ -255,6 +255,7 @@ export default function OverviewGroup({ posts, showStatus = false }) {
         ));
 
     const onTabChange = (key) => {
+        isMounted.current = true;
         setTab(key);
     };
 
