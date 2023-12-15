@@ -46,7 +46,7 @@ module.exports = {
 
             const selectQuery = `
                 SELECT 
-                    pl.user_id,
+                    u.id AS user_id,
                     pl.post_id,
                     p.main_category AS category,
                     IF(pl.post_id IS NOT NULL AND pl.user_id = u.id, 1, 0) AS \`like\`
