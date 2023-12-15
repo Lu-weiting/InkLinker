@@ -48,16 +48,14 @@ module.exports = {
                 SELECT 
                     pl.user_id,
                     pl.post_id,
-                    c.name AS category,
+                    p.main_category AS category,
                     IF(pl.post_id IS NOT NULL AND pl.user_id = u.id, 1, 0) AS \`like\`
                 FROM 
-                    users u
+                    users AS u
                 CROSS JOIN 
-                    posts p
+                    posts AS p
                 LEFT JOIN 
-                    post_like pl ON u.id = pl.user_id AND p.id = pl.post_id
-                LEFT JOIN 
-                    main_categories c ON p.main_category_id = c.id
+                    post_like AS pl ON u.id = pl.user_id AND p.id = pl.post_id
             `;     
             const [result] = await connection.execute(selectQuery);
             if (trainDataRediskey != '') {
