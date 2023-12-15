@@ -193,9 +193,9 @@ export default function OverviewGroup({ posts, showStatus = false }) {
         queryKey: ["recommendedHashtags"],
         queryFn: GetRecommendedHashtags
     });
-
-
-   
+    useEffect(() => {
+        setPostList(posts); // 當父組件的 posts 更新時，更新 postList
+    }, [posts]);
 
     useEffect(() => {
         if (isMounted.current) {

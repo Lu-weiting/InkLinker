@@ -4,9 +4,12 @@ import ReactQuill, { Quill } from 'react-quill';
 import ImageUploader from 'quill-image-uploader';
 // import { quillToMarkdown } from 'quill-markdown';
 import TurndownService from 'turndown';
-import {io} from 'socket.io-client';
+import { io } from 'socket.io-client';
 import MarkdownShortcuts from 'quill-markdown-shortcuts';
 import axios from 'axios';
+import { useParams } from "react-router-dom";
+import Cookies from "js-cookie";
+
 import '../../globalCover.css';
 Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
 Quill.register('modules/imageUploader', ImageUploader);
@@ -52,26 +55,33 @@ const TitleInput = styled.input`
     outline: none;
   }
 `;
-const post_id = 1;
+// const post_id = 1;
 //TODO
 //先判斷localstorage中的status是yes or no，可以得之是不是地一次進入
 //第一次進入頁面==>戳後端createAPI(draft)得到postId之後localstorage就有根據存放
 
-const titleStoreKey = `${post_id}&title`;
-const contentStoreKey = `${post_id}&content`;
-// TODO
-const initialTitleObj = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
-const initialContentObj = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
 
 
-const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
+
+const EditMain = ({ isPublished, setSaveStatus, tags }) => {
+
+    const params = useParams();
+    const user_id = Cookies.get("user_id");
+    const postId = params.post_id;
+
+    const titleStoreKey = `${user_id}&${postId}&title`;
+    const contentStoreKey = `${user_id}&${postId}&content`;
+
+    const initialTitleObj = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
+    const initialContentObj = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
+
     const [title, setTitle] = useState(initialTitleObj.title);
     const [text, setText] = useState(initialContentObj.content);
     const [markdown, setMarkdown] = useState("");
-    const [mainImg , setMainImg] = useState();
+    const [mainImg, setMainImg] = useState();
     const [isOnline, setIsOnline] = useState(navigator.onLine);
-    
-    
+
+
 
     const reactQuillRef = useRef(null);
     const turndownService = new TurndownService();
@@ -86,7 +96,7 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             // 空值是可過的
             if (storedTitle !== undefined || storedContent !== undefined) {
                 console.log('Syncing data with server...');
-                
+
                 socketRef.current.emit('titleMsg', storedTitle);
                 socketRef.current.emit('contentMsg', storedContent);
             }
@@ -125,17 +135,18 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             // 當 isPublished 變為 true 時執行
             const publishContent = async () => {
                 try {
-                    const response = await axios.post(`${API_ENDPOINT}/posts/create`, {
+                    const response = await axios.put(`${API_ENDPOINT}/posts/updateStatus`, {
                         title,
                         content: text,
                         tags,
-                        mainImg: mainImg[0]
+                        mainImg: mainImg[0],
+                        post_id: postId
                     });
                     //sweet alert
                     console.log('Content published:', response.data);
                 } catch (error) {
                     console.error('Error publishing content:', error);
-                    
+
                 }
             };
 
@@ -145,24 +156,25 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
 
 
     const handleTitleChange = (event) => {
-        if(isOnline){
+        if (isOnline) {
             setSaveStatus("Saving");
         }
         setTitle(event.target.value);
 
     };
     const handleTitleBlur = () => {
-        const titleObj ={
-            postId: post_id,
-            title: title
+        const titleObj = {
+            postId: postId,
+            title: title,
+            userId: user_id
         };
         console.log(titleObj);
         localStorage.setItem(titleStoreKey, JSON.stringify(titleObj));
-        socketRef.current.emit('titleMsg',  titleObj);
+        socketRef.current.emit('titleMsg', titleObj);
     };
     const handleChange = (value) => {
         // console.log(value);
-        if(isOnline){
+        if (isOnline) {
             setSaveStatus("Saving");
         }
         setText(value);
@@ -179,9 +191,10 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
         }
     };
     const handleContentBlur = () => {
-        const contentObj ={
-            postId: post_id,
-            content: text
+        const contentObj = {
+            postId: postId,
+            content: text,
+            userId: user_id
         };
         console.log(contentObj);
         localStorage.setItem(contentStoreKey, JSON.stringify(contentObj));
@@ -199,13 +212,13 @@ const EditMain = ({ isPublished ,setSaveStatus ,tags}) => {
             });
             console.log(response.data);
             const { presignedUrl } = response.data;
-            console.log('presignedUrl: '+presignedUrl);
+            console.log('presignedUrl: ' + presignedUrl);
             const uploadResponse = await axios.put(presignedUrl, file, {
                 headers: {
                     'Content-Type': file.type,
                 },
             });
-            
+
             if (uploadResponse.status === 200) {
                 console.log('File successfully uploaded');
                 const imageUrl = `https://${BUCKET_NAME}.s3.${S3_BUCKET_REGION}.amazonaws.com/${encodeURIComponent(file.name)}`;

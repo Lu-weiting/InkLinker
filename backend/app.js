@@ -53,13 +53,13 @@ io.on('connection', (socket) => {
 
     socket.on('titleMsg',async(data) => {
         console.log('Received title:', data.title);
-        await redis.updateCache(`${data.postId}&title`,data.title)
+        await redis.updateCache(`${data.userId}&${data.postId}&title`,data.title)
         socket.emit('msgFromServer', { status: true });
     });
 
     socket.on('contentMsg', async(data) => {
         console.log('Received content:', data.content);
-        await redis.updateCache(`${data.postId}&content`,data.content)
+        await redis.updateCache(`${data.userId}&${data.postId}&content`,data.content)
         socket.emit('msgFromServer', { status: true });
     });
 

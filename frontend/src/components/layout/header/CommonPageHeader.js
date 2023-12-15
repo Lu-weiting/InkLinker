@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import SearchBar from '../searchBar';
+import { useNavigate } from 'react-router-dom';
 
 // import ReactDOM from 'react-dom';
 import CommonLogo from '../../../assets/images/editLogo.png'
@@ -86,10 +87,48 @@ const MemberA = styled.a`
         transform: scale(1.1);
     }
 `;
+const WriteButton = styled.button`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background-color: white;
+  border: none;
+  transition: font-weight 0.3s ease;
+
+  &:hover {
+    font-weight: bold;
+  }
+  &:hover img {
+    transform: scale(1.1);
+  }
+`;
 
 const user_avator = Cookies.get("user_avator");
 const CommonHeader = () => {
+    const navigate = useNavigate();
+    const handleNewPost = async () => {
+        const token = Cookies.get("token");
+        if (!token) {
+            navigate("/login");
+            return;
+        }
 
+        try {
+            const response = await axios.post('/posts/createdPost', {
+                title: 'draft',
+                content: 'draft'
+            }, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+            const postId = response.data.data.post_id;
+            navigate(`/edit?post_id=${postId}`);
+        } catch (error) {
+            console.error('Error creating post:', error);
+            Swal.fire('Error', 'Unable to create post', 'error');
+        }
+    };
 
     return (
         <HeaderContainer>
@@ -102,10 +141,10 @@ const CommonHeader = () => {
                 <SearchBar />
             </LeftSection>
             <RightSection>
-                <WriteLink href={Cookies.get("token") ? "/edit" : "/login"}>
+                <WriteButton onClick={handleNewPost}>
                     <WriteImage src={WriteImg} alt='write'></WriteImage>
                     <WriteText>Write</WriteText>
-                </WriteLink>
+                </WriteButton>
                 <BellA href={Cookies.get("token") ? "/" : "/"}>
                     <img src={Bell} alt="bell" width={24} height={24} />
                 </BellA>
