@@ -1,6 +1,6 @@
 const tool = require('../../../../../utils/tool');
 const postService = require('../../../../../Service/postService');
-const createPostRes = require('./CreatePostRes');
+const createPostRes = require('./UpdatePostRes');
 const errorMsg = require('../../../../../utils/error');
 module.exports = {
     handle: async (res, data ,my_id) => {
