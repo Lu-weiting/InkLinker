@@ -140,7 +140,7 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
             // 當 isPublished 變為 true 時執行
             const publishContent = async () => {
                 try {
-                    const response = await axios.put(`${API_ENDPOINT}/posts/update`, {
+                    const response = await axios.put(`https://18.177.160.174/api/1.0/posts/update`, {
                         title,
                         content: text,
                         tags,
