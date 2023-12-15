@@ -8,7 +8,7 @@ async function createOneHotEncoder() {
     }
     console.log(cacheObj);
     return function encodeCategory(category) {
-        return cacheObj.map(c => c === category ? 1 : 0);
+        return cacheObj.map(c => c.name === category ? 1 : 0);
     };
 }
 

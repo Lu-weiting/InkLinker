@@ -59,13 +59,14 @@ module.exports = {
             }else{
                 const encodeCategory = await createOneHotEncoder();
                 const trainModelData = await mlModelService.getTrainModelData(res,trainningRedisKey);
+                console.log("transformedData:",trainModelData);
                 const tData = trainModelData.map(item => {
                     return {
                         ...item,
                         category: encodeCategory(item.category)
                     };
                 });
-                console.log("transformedData:",tData);
+                // console.log("transformedData:",tData);
                 queryResults = tData;
             }
             // 数据处理
