@@ -83,7 +83,7 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
     const [title, setTitle] = useState(initialTitleObj.title);
     const [text, setText] = useState(initialContentObj.content);
     const [markdown, setMarkdown] = useState("");
-    const [mainImg, setMainImg] = useState();
+    const [mainImg, setMainImg] = useState([]);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
 
 
