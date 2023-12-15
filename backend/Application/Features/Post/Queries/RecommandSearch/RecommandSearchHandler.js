@@ -72,6 +72,7 @@ module.exports = {
             // 数据处理
             const { userIds, articleIds, uniqueUserIds, uniqueArticleIds } = dataProcessor.createIndexMappings(queryResults);
             const transformedData = dataProcessor.transformData(queryResults, userIds, articleIds);
+            console.log("prepareTrainingData before:",transformedData);
             const { userInputs, articleInputs, categoryInputs, ys } = dataProcessor.prepareTrainingData(transformedData);
             const userCount = uniqueUserIds.length;
             const articleCount = uniqueArticleIds.length;

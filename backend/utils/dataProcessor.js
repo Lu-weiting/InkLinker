@@ -18,12 +18,13 @@ function transformData(queryResults, userIds, articleIds) {
 }
 
 function prepareTrainingData(transformedData) {
-    const userInputs = tf.tensor2d(transformedData.map(d => d.userIdIndex));
-    const articleInputs = tf.tensor2d(transformedData.map(d => d.articleIdIndex));
-    const categoryInputs = tf.tensor2d(transformedData.map(d => d.category));
-    const ys = tf.tensor2d(transformedData.map(d => d.like));
+    const userInputs = tf.tensor2d(transformedData.map(d => [d.userIdIndex]), [transformedData.length, 1]);
+    const articleInputs = tf.tensor2d(transformedData.map(d => [d.articleIdIndex]), [transformedData.length, 1]);
+    const categoryInputs = tf.tensor2d(transformedData.map(d => d.category), [transformedData.length, transformedData[0].category.length]);
+    const ys = tf.tensor2d(transformedData.map(d => [d.like]), [transformedData.length, 1]);
 
     return { userInputs, articleInputs, categoryInputs, ys };
 }
+
 
 module.exports = { createIndexMappings, transformData , prepareTrainingData};
