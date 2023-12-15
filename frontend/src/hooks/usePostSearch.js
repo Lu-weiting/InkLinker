@@ -9,7 +9,7 @@ export default function usePostSearch() {
     console.log(token);
     let thereIsCondition = false;
 
-    const apiProcess = (mode = "", cursor = 0, conditions = null , userId = null) => {
+    const apiProcess = (mode = "", cursor = 0, conditions = null ) => {
         let api = process.env.REACT_APP_API;
         let apiUrl = `${api}/posts/search?`;
         if (!conditions) {
@@ -19,7 +19,7 @@ export default function usePostSearch() {
             return `${api}/posts/search`;
         }
 
-        const { title, num } = conditions;
+        const { title, num , tabKey} = conditions;
 
         if (num < 1) {
             apiUrl = `${api}/posts/search`;
@@ -33,9 +33,9 @@ export default function usePostSearch() {
             apiUrl += `title=${title}`;
             thereIsCondition = true;
         }
-        if (userId != null) {
-            apiUrl = `${api}/posts/recommand?userId=${userId}`;
-            thereIsCondition = true;
+        if (tabKey == "2") {
+            apiUrl = `${api}/posts/recommandSearch`;
+            thereIsCondition = false;
         }
 
 
