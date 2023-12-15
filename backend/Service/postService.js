@@ -2,9 +2,8 @@ const connectionPromise = require('../utils/db').connectionPromise;
 const postRepo = require('../Repository/postRepo');
 // const tool = require('../utils/tool');
 module.exports = {
-    getTopPosts: async (res, number,postRedisKey) => {
-        const result = await postRepo.getTopPosts(res, number, postRedisKey);
-        if (result.length == 0) return res.status(403).json("product doesn't exist");
+    initPost: async (res, data , userId) => {
+        const result = await postRepo.initPost(res, data , userId);
         return result;
     },
     getTopPosts: async (res, number,postRedisKey) => {

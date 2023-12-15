@@ -6,6 +6,21 @@ const errorMsg = require('../utils/error');
 const redis = require('../utils/cache');
 
 module.exports = {
+    initPost: async (res, data, userId) => {
+        const connection = connectionPromise;
+        try {
+            const query = `
+                INSERT INTO posts(title,content,status,user_id) VALUES (? , ? , ? , ?)
+            `;
+            const [result] = await connection.execute(query,[data.title,data.content, 'draft',userId]);
+            return result;
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res)
+        } finally {
+            console.log('connection release');
+        }
+    },
     /**
      * Implement Read/Write Through strategy
      * @param {Object} res - The obj response for client
@@ -20,7 +35,7 @@ module.exports = {
                 SELECT p.id, p.title , u.id AS uid, u.name AS authorName, u.avatar
                 FROM posts p INNER JOIN users u ON p.user_id = u.id
                 ORDER BY like_count DESC
-                LIMIT ${number};
+                LIMIT ${number}
             `;
             const [result] = await connection.execute(selectQuery);
             if (postRedisKey != '') {

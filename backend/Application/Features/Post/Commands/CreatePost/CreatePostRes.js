@@ -1,9 +1,9 @@
 module.exports = {
     customize: async(result)=>{
-        const productId = result.insertId;
+        const postId = result.insertId;
         const response = {
             data: {
-                product: productId
+                post_id: postId
             }
         };
         return response;
