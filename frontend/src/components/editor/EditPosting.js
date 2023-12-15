@@ -64,6 +64,7 @@ const TitleInput = styled.input`
 
 
 const token= Cookies.get('token');
+const user_id= Cookies.get('user_id');
 const EditMain = ({ isPublished, setSaveStatus, tags }) => {
 
     // const params = useParams();
