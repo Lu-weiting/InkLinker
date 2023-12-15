@@ -49,7 +49,7 @@ module.exports = {
                     pl.user_id,
                     pl.post_id,
                     c.name AS category,
-                    IF(pl.post_id IS NOT NULL, 1, 0) AS \`like\`
+                    IF(pl.post_id IS NOT NULL AND pl.user_id = u.id, 1, 0) AS \`like\`
                 FROM 
                     users u
                 CROSS JOIN 
