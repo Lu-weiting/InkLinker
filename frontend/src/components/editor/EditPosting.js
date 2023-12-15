@@ -7,8 +7,9 @@ import TurndownService from 'turndown';
 import { io } from 'socket.io-client';
 import MarkdownShortcuts from 'quill-markdown-shortcuts';
 import axios from 'axios';
-import { useParams } from "react-router-dom";
+import { useParams,useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
+// import { useLocation } from 'react-router-dom';
 
 import '../../globalCover.css';
 Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
@@ -65,9 +66,12 @@ const TitleInput = styled.input`
 const token= Cookies.get('token');
 const EditMain = ({ isPublished, setSaveStatus, tags }) => {
 
-    const params = useParams();
-    const user_id = Cookies.get("user_id");
-    const postId = params.post_id;
+    // const params = useParams();
+    // const user_id = Cookies.get("user_id");
+    // const postId = params.post_id;
+    const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const postId = queryParams.get('post_id');
 
     const titleStoreKey = `${user_id}&${postId}&title`;
     const contentStoreKey = `${user_id}&${postId}&content`;
