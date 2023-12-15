@@ -3,7 +3,7 @@ const postService = require('../../../../../Service/postService');
 const createPostRes = require('./CreatePostRes');
 const errorMsg = require('../../../../../utils/error');
 module.exports = {
-    handle: async (res, data) => {
+    handle: async (res, data ,my_id) => {
         //init
         let response = null;
         const data_json = JSON.parse(data);

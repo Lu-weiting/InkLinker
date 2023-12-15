@@ -1,4 +1,4 @@
-// const 
+const createPostHandler = require('../Application/Features/Post/Commands/CreatePost/CreatePostHandler');
 const getPopularPostHandler = require('../Application/Features/Post/Queries/GetPopularPost/GetPopularPostHandler');
 const randomSearchHandler = require('../Application/Features/Post/Queries/RandomSearch/RandomSearchHandler');
 const recommandSearchHandler = require('../Application/Features/Post/Queries/RecommandSearch/RecommandSearchHandler');
@@ -6,8 +6,9 @@ module.exports = {
     createPost: async(req, res)=>{
         try {
             const { data } = req.body;
+            const my_id = req.decodedToken.id;
             console.log(data);
-            const response=await createPostHandler.handle(res,data);
+            const response=await createPostHandler.handle(res,data,my_id);
             res.status(200).json(response);
         } catch (error) {
             console.log(error)
