@@ -76,7 +76,7 @@ export default function UserHomePage() {
   return (
     <>
       <CommonHeader />
-      <OverviewGroup posts={posts} />
+      <OverviewGroup posts={posts} showStatus ={false}/>
     </>
   );
 }

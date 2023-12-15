@@ -100,7 +100,7 @@ export default function PostOverview({ post, showStatus }) {
         img_url,
         author
     } = post;
-    console.log("post", post);
+    console.log("PostOverview", post);
     function extractFirstH2Content(htmlString) {
         // 創建一個新的DOM解析器
         var parser = new DOMParser();

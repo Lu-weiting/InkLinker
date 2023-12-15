@@ -222,7 +222,7 @@ export default function OverviewGroup({ posts, showStatus = false }) {
             console.log(PopularData);
         }
     }, [PopularData]);
-    
+    console.log("postList:",postList);
     const postOverviewItems =
         postList &&
         postList.map((post) => (
