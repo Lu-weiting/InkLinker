@@ -5,7 +5,7 @@ const postController = require('../Controller/postController');
 
 
 router.post('/create',auth.verifyToken, postController.createPost);
-router.post('/update',auth.verifyToken, postController.updatePost);
+router.put('/update',auth.verifyToken, postController.updatePost);
 
 
 router.get('/popular' ,postController.getTopPost);

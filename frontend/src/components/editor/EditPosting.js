@@ -7,11 +7,12 @@ import TurndownService from 'turndown';
 import { io } from 'socket.io-client';
 import MarkdownShortcuts from 'quill-markdown-shortcuts';
 import axios from 'axios';
-import { useParams,useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 // import { useLocation } from 'react-router-dom';
 
 import '../../globalCover.css';
+import Swal from 'sweetalert2';
 Quill.register('modules/markdownShortcuts', MarkdownShortcuts);
 Quill.register('modules/imageUploader', ImageUploader);
 
@@ -63,16 +64,18 @@ const TitleInput = styled.input`
 
 
 
-const token= Cookies.get('token');
-const user_id= Cookies.get('user_id');
+
 const EditMain = ({ isPublished, setSaveStatus, tags }) => {
 
     // const params = useParams();
     // const user_id = Cookies.get("user_id");
     // const postId = params.post_id;
+    const token = Cookies.get('token');
+    const user_id = Cookies.get('user_id');
+    console.log("editPost,user_id:", user_id);
     const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const postId = queryParams.get('post_id');
+    const queryParams = new URLSearchParams(location.search);
+    const postId = queryParams.get('post_id');
 
     const titleStoreKey = `${user_id}&${postId}&title`;
     const contentStoreKey = `${user_id}&${postId}&content`;
@@ -80,18 +83,15 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
     const initialTitleObj = JSON.parse(localStorage.getItem(titleStoreKey)) || '';
     const initialContentObj = JSON.parse(localStorage.getItem(contentStoreKey)) || '';
 
-    const [title, setTitle] = useState(initialTitleObj.title);
-    const [text, setText] = useState(initialContentObj.content);
+    const [title, setTitle] = useState(initialTitleObj == '' ? '' : initialTitleObj.title);
+    const [text, setText] = useState(initialContentObj == '' ? '' : initialContentObj.content);
     const [markdown, setMarkdown] = useState("");
     const [mainImg, setMainImg] = useState([]);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
 
-
-
     const reactQuillRef = useRef(null);
     const turndownService = new TurndownService();
     const socketRef = useRef(null);
-
 
     useEffect(() => {
         const syncData = () => {
@@ -152,6 +152,7 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
                         }
                     });
                     //sweet alert
+                    
                     console.log('Content published:', response.data);
                 } catch (error) {
                     console.error('Error publishing content:', error);

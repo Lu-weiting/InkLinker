@@ -14,8 +14,6 @@ module.exports = {
         //operation
 
         const result = await postService.initPost(res,data,my_id);
-
-
         response = await createPostRes.customize(result);
         return response;
     }

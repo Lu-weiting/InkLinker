@@ -13,8 +13,6 @@ module.exports = {
         }
         //operation
         await postService.updatePost(res,data,my_id);
-        
-
         await updatePostRes.customize(data.post_id);
         return response;
     }

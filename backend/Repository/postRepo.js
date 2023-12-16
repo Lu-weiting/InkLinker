@@ -21,11 +21,21 @@ module.exports = {
             console.log('connection release');
         }
     },
-    updatePost: async(res, data , userId, connection)=>{
+    updatePostStatus: async(res, data , userId, connection)=>{
         try {
+            //tags第一個為main category
             const {title , content, post_id , tags} = data;
-            const query = 'UPDATE posts SET title = ?, content = ?, main_category = ? WHERE user_id = ? AND id = ?';
-            await connection.execute(query, [title , content , tags[0], userId , post_id]);      
+            const query = 'UPDATE posts SET title = ?, content = ?, main_category = ? , status = ? WHERE user_id = ? AND id = ?';
+            await connection.execute(query, [title , content , tags[0], 'published' ,userId , post_id]);      
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
+    },
+    updatePostMainCategory: async(res, category_id , postId, connection)=>{
+        try {
+            const query = 'UPDATE posts SET main_category_id = ? WHERE id = ?';
+            await connection.execute(query, [category_id , postId]);      
         } catch (error) {
             console.error(error);
             errorMsg.query(res);

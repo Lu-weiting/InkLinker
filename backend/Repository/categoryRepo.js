@@ -27,7 +27,7 @@ module.exports = {
         try {
 
             const selectQuery = `
-                SELECT id
+                SELECT *
                 FROM main_categories
                 WHERE name = ?
             `;

@@ -21,8 +21,15 @@ module.exports = {
     },
     updatePost: async(req, res)=>{
         try {
-            const { data } = req.body;
+            const { title,  content, tags, mainImg, post_id} = req.body;
             const my_id = req.decodedToken.id;
+            const data = {
+                title: title,
+                content: content,
+                tags: tags,
+                mainImg: mainImg,
+                post_id: post_id
+            };
             console.log(data);
             const response=await updatePostHandler.handle(res,data,my_id);
             res.status(200).json(response);

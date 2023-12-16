@@ -13,12 +13,19 @@ module.exports = {
     updatePost: async (res, data , userId) => {
         const connection = await connectionPromise.getConnection();
         try {
+            //transaction
             await connection.beginTransaction();
-            await postRepo.updatePost(res, data, userId,connection);
-            //transaction 
+            await postRepo.updatePostStatus(res, data, userId,connection); 
+            const category = await categoryRepo.getCategoryByName(res,data.tags[0]);
+            if(category.length === 0){
+                const insertCategory = await categoryRepo.insertCategory(res,data.tags[0],connection);
+                await postRepo.updatePostMainCategory(res,insertCategory.insertId, data.post_id,connection);
+            }else{
+                await postRepo.updatePostMainCategory(res,category[0].id, data.post_id,connection);
+            }
             for(let i = 0 ; i < data.tags.length ; i++){
                 let hashTag = await hashTagRepo.getHashTagByName(data.tags[i])
-                if(hashTag.length === 0){
+                if(hashTag.length !== 0){
                     await hashTagRepo.updateHashTag(res,hashTag[0].id,connection);
                     await hashTagRepo.insertPostHashTag(res,data.post_id,hashTag[0].id,connection);
                 }else{
@@ -27,10 +34,7 @@ module.exports = {
                 }
             }
             await imageRepo.insertPic(res,data,connection);
-            const category = await categoryRepo.getCategoryByName(res,data.tags[0]);
-            if(category.length === 0){
-                await categoryRepo.insertCategory(res,data.tags[0],connection);
-            }
+            
             await connection.commit();
 
         } catch (error) {

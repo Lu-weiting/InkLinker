@@ -38,7 +38,7 @@ module.exports = {
         try {
 
             const selectQuery = `
-                SELECT id
+                SELECT *
                 FROM hash_tags
                 WHERE name = ?
             `;
@@ -57,7 +57,7 @@ module.exports = {
             // const {name , email, hashedPassword , provider , avator} = userInfoObj;
             const query = 'INSERT INTO hash_tags(name) VALUES(?)';
             const [result] = await connection.execute(query, [name]); 
-            return result;     
+            return result;
         } catch (error) {
             console.error(error);
             errorMsg.query(res);
