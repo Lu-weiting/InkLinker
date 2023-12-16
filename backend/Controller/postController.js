@@ -31,6 +31,7 @@ module.exports = {
                 post_id: post_id
             };
             console.log(data);
+            console.log(data.tags[0]);
             const response=await updatePostHandler.handle(res,data,my_id);
             res.status(200).json(response);
         } catch (error) {
