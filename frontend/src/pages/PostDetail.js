@@ -11,6 +11,8 @@
 // import {GetProductDetail} from "../../hooks/api";
 // const PostDetail = () => {
 //     const { id } = useParams();
+//     const userId = Cookies.get("user_id");
+
 //     console.log("testId:"+id);
 //     const { data, isLoading, isError,error,isSuccess } = useQuery({
 //         queryKey: ["productDetails", id],

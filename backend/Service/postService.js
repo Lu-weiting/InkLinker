@@ -24,7 +24,7 @@ module.exports = {
                 await postRepo.updatePostMainCategory(res,category[0].id, data.post_id,connection);
             }
             for(let i = 0 ; i < data.tags.length ; i++){
-                let hashTag = await hashTagRepo.getHashTagByName(data.tags[i])
+                let hashTag = await hashTagRepo.getHashTagByName(res,data.tags[i])
                 if(hashTag.length !== 0){
                     await hashTagRepo.updateHashTag(res,hashTag[0].id,connection);
                     await hashTagRepo.insertPostHashTag(res,data.post_id,hashTag[0].id,connection);
