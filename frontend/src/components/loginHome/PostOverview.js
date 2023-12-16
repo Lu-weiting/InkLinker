@@ -100,7 +100,6 @@ export default function PostOverview({ post, showStatus }) {
         img_url,
         author
     } = post;
-    console.log("PostOverview", post);
     function extractFirstH2Content(htmlString) {
         // 創建一個新的DOM解析器
         var parser = new DOMParser();
@@ -112,7 +111,6 @@ export default function PostOverview({ post, showStatus }) {
         return h2Element ? h2Element.textContent : '';
     }
     const subtitle = extractFirstH2Content(content);
-    console.log(subtitle);
     const pastDate = new Date(created_at); // 過去的某個時間
     const now = new Date();
     const relativeTime = formatDistance(pastDate, now, { addSuffix: true });

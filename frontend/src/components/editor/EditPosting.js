@@ -144,7 +144,7 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
                         title,
                         content: text,
                         tags,
-                        mainImg: mainImg[0],
+                        mainImg: mainImg.length === 0 ? null : mainImg[0],
                         post_id: postId
                     }, {
                         headers: {

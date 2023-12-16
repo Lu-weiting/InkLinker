@@ -42,6 +42,7 @@ module.exports = {
                 FROM hash_tags
                 WHERE name = ?
             `;
+            console.log(name);
             const [result] = await connection.execute(selectQuery,[name]);
             
             return result;
