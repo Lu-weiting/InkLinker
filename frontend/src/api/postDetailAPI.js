@@ -2,7 +2,7 @@ import axios from "axios";
 
 const api = process.env.REACT_APP_API;
 
-export async function GetProductDetail (id)  {
+export async function GetPostDetail (id)  {
     try {
         const response = await axios.get(
             `${api}/posts/detail`, {

@@ -67,7 +67,7 @@ module.exports = {
     insertPostHashTag: async(res,post_id,tag_id, connection)=>{
         try {
             // const {name , email, hashedPassword , provider , avator} = userInfoObj;
-            const query = 'INSERT INTO post_hash_tags(post_id, hash_tag_id) VALUES(?,?)';
+            const query = 'INSERT INTO posts_hash_tags(post_id, hash_tag_id) VALUES(?,?)';
             const [result] = await connection.execute(query, [post_id,tag_id]); 
             return result;     
         } catch (error) {
