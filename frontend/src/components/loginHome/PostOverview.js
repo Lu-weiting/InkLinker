@@ -127,7 +127,7 @@ export default function PostOverview({ post, showStatus }) {
                 <AuthorName>{author.name}</AuthorName>
                 <CreateTime>{relativeTime}</CreateTime>
             </PostHeader>
-            <Link href={`/posts/${id}`} data-testid="post-card">
+            <Link href={`/post/${id}`} data-testid="post-card">
                 <PostBody>
                     <PostTextContainer>
                         <PostTitle>{title}</PostTitle>
