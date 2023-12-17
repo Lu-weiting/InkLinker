@@ -5,7 +5,7 @@ const randomSearchHandler = require('../Application/Features/Post/Queries/Random
 const recommandSearchHandler = require('../Application/Features/Post/Queries/RecommandSearch/RecommandSearchHandler');
 const likePostHandler = require('../Application/Features/Post/Commands/LikePost/LikePostHandler');
 const cancelLikeHandler = require('../Application/Features/Post/Commands/CancelLikePost/CancelLikePostHandler');
-
+const getPostDetailHandler = require('../Application/Features/Post/Queries/GetPostDetail/GetPostDetailHandler');
 module.exports = {
     createPost: async(req, res)=>{
         try {

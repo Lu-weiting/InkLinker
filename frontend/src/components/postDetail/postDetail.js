@@ -3,11 +3,10 @@ import styled from 'styled-components';
 // import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { LikeOutlined, MoreOutlined } from '@ant-design/icons';
-import { Button, Dropdown } from 'antd';
+import { Button, Dropdown, FloatButton } from 'antd';
 import Avatar from '@mui/material/Avatar';
 import { formatDistance } from 'date-fns';
 import axios from "axios";
-
 import member from '../../assets/images/member.png';
 import Fave from "./fave";
 import DOMPurify from 'dompurify';
