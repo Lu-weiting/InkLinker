@@ -5,10 +5,7 @@ const api = process.env.REACT_APP_API;
 export async function GetPostDetail (id,token)  {
     try {
         const response = await axios.get(
-            `${api}/posts/detail`, {
-            params: {
-                id,
-            },
+            `${api}/posts/detail/${id}`, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
