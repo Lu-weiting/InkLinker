@@ -1,7 +1,5 @@
 import React from 'react';
 import './index.css';
-
-
 const Fave = ({ size, fave }) => {
 
   const style = {
@@ -12,7 +10,12 @@ const Fave = ({ size, fave }) => {
   const animationClass = fave ? 'fave-ani' : '';
 
   // 返回JSX
-  return <div className={`twitter-fave ${animationClass}`} style={style} />;
+  return (
+    <div>
+      <div className={`twitter-fave ${animationClass}`} style={style} />
+    </div>
+
+  )
 };
 
 

@@ -141,6 +141,7 @@ const PostDetail = ({ post }) => {
     const [likeCount, setLikeCount] = useState(post.like_count);
     const userId = Cookies.get("user_id");
     const token = Cookies.get('token');
+    console.log("likeCount:",likeCount)
     // const userId = 1;
     const {
         id,
@@ -150,6 +151,10 @@ const PostDetail = ({ post }) => {
         tags,
         author
     } = post;
+    useEffect(() => {
+        setFave(post.is_like);
+        setLastFaveState(fave)
+    }, [post]);
     const cleanContent = DOMPurify.sanitize(content);
     const items = [
         {
@@ -162,14 +167,19 @@ const PostDetail = ({ post }) => {
         }
     ];
     useEffect(() => {
-        setIsTaskAssigner(author.id === userId);
-    }, [author.id, userId]);
+        setFave(prev => {
+            // 立即更新点赞计数，基于即将设置的点赞状态
+            setLastFaveState(post.is_like);
+            setLikeCount(post.like_count);
+            return post.is_like; // 返回点赞状态的反转
+        });
+    }, [post]);
 
 
     const hashtags =
         tags &&
-        tags.map((hashtag) => (
-            <Tag key={hashtag.id}>{hashtag.name}</Tag>
+        tags.map((hashtag,index) => (
+            <Tag key={index}>{hashtag.name}</Tag>
         ));
 
     const pastDate = new Date(created_at); // 過去的某個時間
