@@ -6,7 +6,7 @@ module.exports = {
     handle: async(res,postId,userId)=>{
         //init
         let response = null;
-        const postRedisKey = `postDetail&${productId}`;
+        const postRedisKey = `postDetail&${postId}`;
 
         //operation
         let result = null;
@@ -17,7 +17,7 @@ module.exports = {
         }else{
             result = cacheObj;
         }
-        
+
         if (result.length == 0) return res.status(403).json("product doesn't exist");
         console.log(result);
         response = await postDetailResponse.customize(result);
