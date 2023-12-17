@@ -4,6 +4,7 @@ import member from '../../assets/images/member.png';
 import test from '../../assets/images/test.jpeg';
 import Avatar from '@mui/material/Avatar';
 import { formatDistance } from 'date-fns';
+// import Cookies from "js-cookie";
 // import member from '../../assets/images/member';
 const PostContainer = styled.div`
   display: flex;

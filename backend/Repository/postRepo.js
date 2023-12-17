@@ -155,7 +155,73 @@ module.exports = {
         } finally {
             console.log('connection release');
         }
-    }
+    },
+    getPostDetail: async (res, postId, userId, postRedisKey) => {
+        const connection = await connectionPromise;
+        try {
+
+            const selectQuery = `
+                SELECT
+                    p.id,
+                    p.title,
+                    p.content,
+                    p.main_category,
+                    p.like_count,
+                    p.is_active,
+                    p.created_at,
+                    p.status,
+                    p.user_id,
+                    p.main_category_id,
+                    u.id AS author_id,
+                    u.name AS author_name,
+                    u.avatar AS author_avatar,
+                    (pl.post_id IS NOT NULL) AS is_liked,
+                    GROUP_CONCAT(ht.name) AS hash_tag_names
+                FROM
+                    posts p
+                LEFT JOIN
+                    users u ON p.user_id = u.id
+                LEFT JOIN
+                    post_like pl ON p.id = pl.post_id AND pl.user_id = ${userId}
+                LEFT JOIN
+                    posts_hash_tags pht ON p.id = pht.post_id
+                LEFT JOIN
+                    hash_tags ht ON pht.hash_tag_id = ht.id
+                WHERE
+                    p.id = ${postId}
+                GROUP BY
+                    p.id
+            `;
+            const [result] = await connection.execute(selectQuery);
+            if (postRedisKey != '') {
+                await redis.updateCache(postRedisKey, result);
+            }
+            return result;
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res)
+        } finally {
+            console.log('connection release');
+        }
+    },
+    likePost: async(res, postId , connection)=>{
+        try {
+            const query = 'UPDATE posts SET like_count = like_count + 1 WHERE id = ?';
+            await connection.execute(query, [postId]);      
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
+    },
+    deleteLike: async(res, postId , connection)=>{
+        try {
+            const query = 'UPDATE posts SET like_count = like_count - 1 WHERE id = ?';
+            await connection.execute(query, [postId]);
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res);
+        }
+    },
 
 
 

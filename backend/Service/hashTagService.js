@@ -5,6 +5,7 @@ module.exports = {
     getTopHashTags: async (res,hashTagRedisKey) => {
         const result = await hashTagRepo.getTopHashTags(res, hashTagRedisKey);
         return result;
-    },
+    }
+    
 
 }

@@ -104,7 +104,7 @@ const WriteButton = styled.button`
   }
 `;
 
-const user_avator = Cookies.get("user_avator");
+const user_avator = Cookies.get("user_avatar");
 const CommonHeader = () => {
     const navigate = useNavigate();
     const handleNewPost = async () => {

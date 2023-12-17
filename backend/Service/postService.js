@@ -3,7 +3,7 @@ const postRepo = require('../Repository/postRepo');
 const imageRepo = require('../Repository/imageRepo');
 const hashTagRepo = require('../Repository/hashTagRepo');
 const categoryRepo = require('../Repository/categoryRepo');
-
+const postLikeRepo = require('../Repository/postLikeRepo');
 // const tool = require('../utils/tool');
 module.exports = {
     initPost: async (res, data , userId) => {
@@ -33,8 +33,9 @@ module.exports = {
                     await hashTagRepo.insertPostHashTag(res,data.post_id,newHashtag.insertId,connection);
                 }
             }
-            await imageRepo.insertPic(res,data,connection);
-            
+            if(data.mainImg !== null){
+                await imageRepo.insertPic(res,data,connection);
+            }
             await connection.commit();
 
         } catch (error) {
@@ -67,6 +68,53 @@ module.exports = {
 
         return result;
     },
+    getPostDetail: async (res, postId , userId, postRedisKey) => {
+        const result = await postRepo.getPostDetail(res, postId , userId, postRedisKey);
+        return result;
+    },
+    updatePostLike: async (res, postId , userId)=>{
+        const connection = await connectionPromise.getConnection();
+        try {
+            //transaction
+            const record = await postLikeRepo.findLikeRecord(res,postId,userId);
+            await connection.beginTransaction();
+            if(record.length === 0){
+                await postRepo.likePost(res, postId ,connection);
+                await postLikeRepo.addLikeRecord(res,postId,userId,connection);
+            }
+            await connection.commit();
+
+        } catch (error) {
+            await connection.rollback();
+            console.error(error);
+            errorMsg.query(res);
+        } finally {
+            console.log('connection release');
+            connection.release();
+        }
+    },
+    deletePostLike: async (res, postId , userId)=>{
+        const connection = await connectionPromise.getConnection();
+        try {
+            //transaction
+            const record = await postLikeRepo.findLikeRecord(res,postId,userId);
+            await connection.beginTransaction();
+            if(record.length !== 0){
+                await postRepo.deleteLike(res, postId ,connection);
+                await postLikeRepo.deleteLikeRecord(res,postId,userId,connection);
+            }
+            await connection.commit();
+
+        } catch (error) {
+            await connection.rollback();
+            console.error(error);
+            errorMsg.query(res);
+        } finally {
+            console.log('connection release');
+            connection.release();
+        }
+        
+    }
 
 
 }

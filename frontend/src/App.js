@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 // import HomePageLayout from "./pages/homePage";
 import EditPage from "./pages/EditPage";
 import LoginSignUpPage from "./pages/LoginSignUp";
+import PostDetailPage from "./pages/PostDetailPage";
 import UserHomePage from "./pages/UserHome";
 import { Provider } from "react-redux";
 import store from "./redux/store";
@@ -36,6 +37,7 @@ function App() {
                         </Route>
 
                         <Route path="/edit" element={<EditPage />} />
+                        <Route path="/post/:id" element={<PostDetailPage />}></Route>
                         {/* <Route element={<PrivateRoute />}>
               <Route path="/user" element={<ProfilePage />} />
               <Route path="/thankyou" element={<ThankyouPage />} />
