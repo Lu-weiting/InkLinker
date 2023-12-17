@@ -6,9 +6,12 @@ import { LikeOutlined, MoreOutlined } from '@ant-design/icons';
 import { Button, Dropdown } from 'antd';
 import Avatar from '@mui/material/Avatar';
 import { formatDistance } from 'date-fns';
+import axios from "axios";
+
 import member from '../../assets/images/member.png';
 import Fave from "./fave";
 import DOMPurify from 'dompurify';
+import debounce from 'lodash.debounce';
 const api = process.env.REACT_APP_API;
 // import { useSelector, useDispatch } from "react-redux";
 // import { setIsLoadingPosts } from "../redux/LoadingControl";

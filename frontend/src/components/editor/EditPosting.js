@@ -7,7 +7,7 @@ import TurndownService from 'turndown';
 import { io } from 'socket.io-client';
 import MarkdownShortcuts from 'quill-markdown-shortcuts';
 import axios from 'axios';
-import { useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import Cookies from "js-cookie";
 // import { useLocation } from 'react-router-dom';
 
@@ -76,6 +76,7 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const postId = queryParams.get('post_id');
+    
 
     const titleStoreKey = `${user_id}&${postId}&title`;
     const contentStoreKey = `${user_id}&${postId}&content`;
@@ -88,6 +89,7 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
     const [markdown, setMarkdown] = useState("");
     const [mainImg, setMainImg] = useState([]);
     const [isOnline, setIsOnline] = useState(navigator.onLine);
+    const navigate = useNavigate();
 
     const reactQuillRef = useRef(null);
     const turndownService = new TurndownService();
@@ -152,7 +154,7 @@ const EditMain = ({ isPublished, setSaveStatus, tags }) => {
                         }
                     });
                     //sweet alert
-                    
+                    navigate(`/post/${postId}`);
                     console.log('Content published:', response.data);
                 } catch (error) {
                     console.error('Error publishing content:', error);
