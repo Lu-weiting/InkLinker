@@ -44,6 +44,7 @@ const TitleInput = styled.input`
   font-weight: normal;
   border: none;
   padding: 10px 15px;
+  width: 100%;
 
 //   background-color: #f8f8f8;
     background-color: white;    

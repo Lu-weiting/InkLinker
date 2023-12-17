@@ -41,7 +41,7 @@ const EditStatus = styled.span`
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  margin-right: 15rem;
+  margin-right: 10rem;
 `;
 const PublishBtn = styled.button`
     width: 6rem;

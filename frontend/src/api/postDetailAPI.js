@@ -13,7 +13,6 @@ export async function GetPostDetail (id,token)  {
                 Authorization: `Bearer ${token}`
             }
         });
-        
         return response.data.data;
     } catch (error) {
         console.log(error);
