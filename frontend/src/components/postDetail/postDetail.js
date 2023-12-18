@@ -173,15 +173,6 @@ const PostDetail = ({ post , islike}) => {
             ),
         }
     ];
-    // useEffect(() => {
-    //     setFave(prev => {
-    //         // 立即更新点赞计数，基于即将设置的点赞状态
-    //         setLastFaveState(islike.is_like);
-    //         setLikeCount(post.like_count);
-    //         return islike.is_like; // 返回点赞状态的反转
-    //     });
-    // }, [post]);
-
 
     const hashtags =
         tags &&
@@ -192,22 +183,21 @@ const PostDetail = ({ post , islike}) => {
     const pastDate = new Date(created_at); // 過去的某個時間
     const now = new Date();
     const relativeTime = formatDistance(pastDate, now, { addSuffix: true });
-    const sendLikeRequest = async () => {
+    const sendLikeRequest = async (newFave) => {
         console.log("fave === lastFaveState",fave === lastFaveState);
-        if (fave === lastFaveState) return; // 如果点赞状态没有变化，则不发送请求
+        // if (fave === lastFaveState) return; // 如果点赞状态没有变化，则不发送请求
          // 获取token
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
 
         try {
-            if (fave) {
+            if (newFave) {
                 await axios.post(`${api}/posts/${id}/like`, {}, config);
             } else {
                 await axios.delete(`${api}/posts/${id}/like`, config);
             }
-
-            setLastFaveState(fave); // 更新最后一次保存的点赞状态
+            setLastFaveState(newFave);
         } catch (error) {
             console.error('Error handling like', error);
             // 这里可以添加错误处理逻辑
@@ -219,9 +209,10 @@ const PostDetail = ({ post , islike}) => {
         setFave(prev => {
             // 立即更新点赞计数，基于即将设置的点赞状态
             setLikeCount(likeCount => prev ? likeCount - 1 : likeCount + 1);
-            return !prev; // 返回点赞状态的反转
+            const newFave = !prev;
+            debouncedSendLikeRequest(newFave); 
+            return newFave;
         });
-        debouncedSendLikeRequest(); // 调用防抖函数
     }
 
 
