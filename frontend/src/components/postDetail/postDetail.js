@@ -180,13 +180,10 @@ const PostDetail = ({ post , islike}) => {
             <Tag key={index}>{hashtag.name}</Tag>
         ));
 
-    const pastDate = new Date(created_at); // 過去的某個時間
+    const pastDate = new Date(created_at);
     const now = new Date();
     const relativeTime = formatDistance(pastDate, now, { addSuffix: true });
     const sendLikeRequest = async (newFave) => {
-        console.log("fave === lastFaveState",fave === lastFaveState);
-        // if (fave === lastFaveState) return; // 如果点赞状态没有变化，则不发送请求
-         // 获取token
         const config = {
             headers: { Authorization: `Bearer ${token}` }
         };
@@ -200,11 +197,10 @@ const PostDetail = ({ post , islike}) => {
             setLastFaveState(newFave);
         } catch (error) {
             console.error('Error handling like', error);
-            // 这里可以添加错误处理逻辑
         }
     };
     const debouncedSendLikeRequest = debounce(sendLikeRequest, 1000); // 用户停止操作1秒后触发
-//可能fave來不急更新
+    //可能fave來不急更新
     const handleLikeClick = () => {
         setFave(prev => {
             // 立即更新点赞计数，基于即将设置的点赞状态

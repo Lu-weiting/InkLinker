@@ -55,12 +55,15 @@ module.exports = {
         return result;
     },
     searchInRandom: async (res, decodeCurser , title , limit) => {
-        
+        let result = null;
         if(title == null){
-            const result = await postRepo.searchByNoCondition(res, decodeCurser ,limit);
+            result = await postRepo.searchByNoCondition(res, decodeCurser ,limit);
             return result;
+        }else{
+            result = await postRepo.searchPostByTitle(res,title,decodeCurser , limit);
         }
-        const result = await postRepo.searchPostByTitle(res,title,decodeCurser , limit);
+        console.log("title:",title);
+        console.log("titleresult:",result);
 
         return result;
     },
