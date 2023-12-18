@@ -72,6 +72,7 @@ module.exports = {
     searchPostByTitle: async (res, title, decodeCurser, limit) => {
         const connection = connectionPromise;
         try {
+            const input = `'%${title}%'`
             const selectQuery = `
                 SELECT 
                     P.*,
@@ -81,12 +82,12 @@ module.exports = {
                     (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS image_url
                 FROM posts AS P
                 LEFT JOIN users AS U ON P.user_id = U.id 
-                WHERE P.status = ? AND P.is_active = ? AND P.title LIKE ? AND P.id < ${decodeCurser}
+                WHERE P.status = ? AND P.is_active = ? AND P.title LIKE '%${title}%' AND P.id < ${decodeCurser}
                 ORDER BY P.id DESC
                 LIMIT ${limit}
             `;
 
-            const [result] = await connection.execute(selectQuery, ['published', 1, `'%${title}%'`, decodeCurser, limit]);
+            const [result] = await connection.execute(selectQuery, ['published', 1, decodeCurser, limit]);//`'%${title}%'`
             return result;
         } catch (error) {
             console.error(error);
