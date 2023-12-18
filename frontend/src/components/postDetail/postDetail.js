@@ -193,6 +193,7 @@ const PostDetail = ({ post , islike}) => {
     const now = new Date();
     const relativeTime = formatDistance(pastDate, now, { addSuffix: true });
     const sendLikeRequest = async () => {
+        console.log("fave === lastFaveState",fave === lastFaveState);
         if (fave === lastFaveState) return; // 如果点赞状态没有变化，则不发送请求
          // 获取token
         const config = {
