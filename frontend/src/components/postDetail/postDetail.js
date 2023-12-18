@@ -159,7 +159,8 @@ const PostDetail = ({ post , islike}) => {
 
     useEffect(() => {
         setFave(islike.is_like);
-        setLastFaveState(fave)
+        setLastFaveState(fave);
+        setLikeCount(post.like_count);
     }, [post]);
     const cleanContent = DOMPurify.sanitize(content);
     const items = [
@@ -172,14 +173,14 @@ const PostDetail = ({ post , islike}) => {
             ),
         }
     ];
-    useEffect(() => {
-        setFave(prev => {
-            // 立即更新点赞计数，基于即将设置的点赞状态
-            setLastFaveState(islike.is_like);
-            setLikeCount(post.like_count);
-            return islike.is_like; // 返回点赞状态的反转
-        });
-    }, [post]);
+    // useEffect(() => {
+    //     setFave(prev => {
+    //         // 立即更新点赞计数，基于即将设置的点赞状态
+    //         setLastFaveState(islike.is_like);
+    //         setLikeCount(post.like_count);
+    //         return islike.is_like; // 返回点赞状态的反转
+    //     });
+    // }, [post]);
 
 
     const hashtags =
