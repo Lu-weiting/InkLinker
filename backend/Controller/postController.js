@@ -101,7 +101,7 @@ module.exports = {
             console.log(error)
         }
     },
-    getUserLikeRecord: async()=>{
+    getUserLikeRecord: async(req,res)=>{
         try {
             const pid = parseInt(req.params.id);
             const my_id = req.decodedToken.id;
