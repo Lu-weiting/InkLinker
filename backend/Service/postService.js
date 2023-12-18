@@ -4,6 +4,7 @@ const imageRepo = require('../Repository/imageRepo');
 const hashTagRepo = require('../Repository/hashTagRepo');
 const categoryRepo = require('../Repository/categoryRepo');
 const postLikeRepo = require('../Repository/postLikeRepo');
+// const redis = require('../utils/cache');
 // const tool = require('../utils/tool');
 module.exports = {
     initPost: async (res, data , userId) => {
@@ -13,6 +14,7 @@ module.exports = {
     updatePost: async (res, data , userId) => {
         const connection = await connectionPromise.getConnection();
         try {
+            
             //transaction
             await connection.beginTransaction();
             await postRepo.updatePostStatus(res, data, userId,connection); 
@@ -72,6 +74,10 @@ module.exports = {
         const result = await postRepo.getPostDetail(res, postId , userId, postRedisKey);
         return result;
     },
+    getSpecificUserLikeRecord: async (res, postId , userId) => {
+        const result = await postRepo.getSpecificUserLikeRecord(res, postId , userId);
+        return result;
+    },
     updatePostLike: async (res, postId , userId)=>{
         const connection = await connectionPromise.getConnection();
         try {
@@ -83,7 +89,7 @@ module.exports = {
                 await postLikeRepo.addLikeRecord(res,postId,userId,connection);
             }
             await connection.commit();
-
+            
         } catch (error) {
             await connection.rollback();
             console.error(error);

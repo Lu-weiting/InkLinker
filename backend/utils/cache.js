@@ -40,7 +40,15 @@ module.exports = {
             console.log(err);
             throw (err);
         };
-    }
+    },
+    deleteCacheByKey: async (key) => {
+        try {
+            await client.del(key);
+        } catch (err) {
+            console.log(err);
+            throw err;
+        }
+    },
 
 
 }

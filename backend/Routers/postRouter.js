@@ -9,6 +9,7 @@ router.get('/popular' ,postController.getTopPost);
 router.get('/search',auth.verifyToken , postController.randomSearch);
 router.get('/recommandSearch',auth.verifyToken , postController.recommandSearch);
 router.get('/detail/:id',auth.verifyToken,postController.getPostDetail);
+router.get('/checkLike/:id',auth.verifyToken,postController.getUserLikeRecord);
 
 
 

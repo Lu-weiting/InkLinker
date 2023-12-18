@@ -175,14 +175,11 @@ module.exports = {
                     u.id AS author_id,
                     u.name AS author_name,
                     u.avatar AS author_avatar,
-                    (pl.post_id IS NOT NULL) AS is_liked,
                     GROUP_CONCAT(ht.name) AS hash_tag_names
                 FROM
                     posts p
                 LEFT JOIN
                     users u ON p.user_id = u.id
-                LEFT JOIN
-                    post_like pl ON p.id = pl.post_id AND pl.user_id = ${userId}
                 LEFT JOIN
                     posts_hash_tags pht ON p.id = pht.post_id
                 LEFT JOIN
@@ -196,6 +193,21 @@ module.exports = {
             if (postRedisKey != '') {
                 await redis.updateCache(postRedisKey, result);
             }
+            return result;
+        } catch (error) {
+            console.error(error);
+            errorMsg.query(res)
+        } finally {
+            console.log('connection release');
+        }
+    },
+    getSpecificUserLikeRecord: async (res, postId, userId) => {
+        const connection = await connectionPromise;
+        try {
+
+            const selectQuery = `SELECT * FROM post_like WHERE post_id = ? AND user_id = ?`;
+            const [result] = await connection.execute(selectQuery,[postId,userId]);
+            
             return result;
         } catch (error) {
             console.error(error);

@@ -4,21 +4,28 @@ import { useParams } from "react-router-dom";
 // import { useEffect, useState } from "react";
 
 import CommonHeader from "../components/layout/header/CommonPageHeader";
-import { GetPostDetail } from "../api/postDetailAPI";
+import { GetPostDetail , GetUserLikeRecord} from "../api/postDetailAPI";
 import PostDetail from "../components/postDetail/postDetail";
 
 const PostDetailPage = () => {
   const { id } = useParams();
   const token = Cookies.get("token");
   console.log("testId:" + id);
-  const { data, isLoading, isError, error, isSuccess } = useQuery({
+  const { data: postData, isLoading: isPostLoading, isError: isPostError, error: postError } = useQuery({
     queryKey: ["postDetails", id],
-    queryFn: () => GetPostDetail(id,token)
+    queryFn: () => GetPostDetail(id, token)
   });
+
+  // 获取用户点赞记录
+  const { data: userLikeData, isLoading: isUserLikeLoading, isError: isUserLikeError, error: userLikeError } = useQuery({
+    queryKey: ["userLikeRecord", id],
+    queryFn: () => GetUserLikeRecord(id, token)
+  });
+
   return (
     <>
       <CommonHeader />
-      {!isLoading && <PostDetail post={data} />}
+      {!isPostLoading &&!isUserLikeLoading && <PostDetail post={postData} islike={userLikeData}/>}
     </>
   );
 }

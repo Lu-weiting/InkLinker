@@ -16,3 +16,18 @@ export async function GetPostDetail (id,token)  {
         console.log(error);
     }
 };
+
+export async function GetUserLikeRecord (id,token)  {
+    try {
+        const response = await axios.get(
+            `${api}/posts/checkLike/${id}`, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+        console.log("likeAPI: ",response.data.data);
+        return response.data.data;
+    } catch (error) {
+        console.log(error);
+    }
+};

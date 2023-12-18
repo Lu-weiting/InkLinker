@@ -6,6 +6,7 @@ const recommandSearchHandler = require('../Application/Features/Post/Queries/Rec
 const likePostHandler = require('../Application/Features/Post/Commands/LikePost/LikePostHandler');
 const cancelLikeHandler = require('../Application/Features/Post/Commands/CancelLikePost/CancelLikePostHandler');
 const getPostDetailHandler = require('../Application/Features/Post/Queries/GetPostDetail/GetPostDetailHandler');
+const getSpecificUserLikeRecordHandler = require('../Application/Features/Post/Queries/GetSpecificUserLikeRecord/GetSpecificUserLikeRecordHandler');
 module.exports = {
     createPost: async(req, res)=>{
         try {
@@ -96,6 +97,16 @@ module.exports = {
             const pid =parseInt(req.params.id);
             const my_id = req.decodedToken.id;
             await cancelLikeHandler.handle(res,pid,my_id);
+        } catch (error) {
+            console.log(error)
+        }
+    },
+    getUserLikeRecord: async()=>{
+        try {
+            const pid = parseInt(req.params.id);
+            const my_id = req.decodedToken.id;
+            const response = await getSpecificUserLikeRecordHandler.handle(res, pid, my_id);
+            res.status(200).json(response);
         } catch (error) {
             console.log(error)
         }

@@ -134,14 +134,15 @@ const LikeCountDiv = styled.div`
 
 
 
-const PostDetail = ({ post }) => {
+const PostDetail = ({ post , islike}) => {
     const [isTaskAssigner, setIsTaskAssigner] = useState(false);
-    const [fave, setFave] = useState(post.is_like);
+    const [fave, setFave] = useState(islike.is_like);
     const [lastFaveState, setLastFaveState] = useState(fave);
     const [likeCount, setLikeCount] = useState(post.like_count);
     const userId = Cookies.get("user_id");
     const token = Cookies.get('token');
-    console.log("likeCount:",likeCount)
+    console.log("likeCount:",likeCount);
+    console.log("fave:",fave);
     // const userId = 1;
     const {
         id,
@@ -151,8 +152,13 @@ const PostDetail = ({ post }) => {
         tags,
         author
     } = post;
+
     useEffect(() => {
-        setFave(post.is_like);
+        setIsTaskAssigner(author.id === userId);
+      }, [author.id, userId]);
+
+    useEffect(() => {
+        setFave(islike.is_like);
         setLastFaveState(fave)
     }, [post]);
     const cleanContent = DOMPurify.sanitize(content);
@@ -169,9 +175,9 @@ const PostDetail = ({ post }) => {
     useEffect(() => {
         setFave(prev => {
             // 立即更新点赞计数，基于即将设置的点赞状态
-            setLastFaveState(post.is_like);
+            setLastFaveState(islike.is_like);
             setLikeCount(post.like_count);
-            return post.is_like; // 返回点赞状态的反转
+            return islike.is_like; // 返回点赞状态的反转
         });
     }, [post]);
 
@@ -206,7 +212,7 @@ const PostDetail = ({ post }) => {
         }
     };
     const debouncedSendLikeRequest = debounce(sendLikeRequest, 1000); // 用户停止操作1秒后触发
-
+//可能fave來不急更新
     const handleLikeClick = () => {
         setFave(prev => {
             // 立即更新点赞计数，基于即将设置的点赞状态

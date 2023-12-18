@@ -13,8 +13,7 @@ module.exports = {
                 id: result[0].author_id,
                 name: result[0].author_name,
                 avatar: result[0].author_avatar
-            },
-            is_like: result[0].is_liked
+            }
         };
         response = {
             data: totalData
