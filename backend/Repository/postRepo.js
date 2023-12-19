@@ -72,7 +72,7 @@ module.exports = {
     searchPostByTitle: async (res, title, decodeCurser, limit) => {
         const connection = connectionPromise;
         try {
-            const input = `'%${title}%'`
+            const input = `%${title}%`
             const selectQuery = `
                 SELECT 
                     P.*,
@@ -86,6 +86,7 @@ module.exports = {
                 ORDER BY P.id DESC
                 LIMIT ${limit}
             `;
+
 
             const [result] = await connection.execute(selectQuery, ['published', 1 ,input]);//`'%${title}%'`
             return result;
