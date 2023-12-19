@@ -82,8 +82,9 @@ module.exports = {
             const embeddingSize = 50;
 
             // 创建模型
+            console.log("start model create");
             const model = modelDefinition.createModel(userCount, articleCount, categoryCount, embeddingSize);
-
+            console.log("start train");
             // 训练模型
             await modelTraining.trainModel(model, userInputs, articleInputs, categoryInputs, ys, 20, 32);
 
