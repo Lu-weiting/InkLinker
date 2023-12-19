@@ -87,7 +87,7 @@ module.exports = {
                 LIMIT ${limit}
             `;
 
-            const [result] = await connection.execute(selectQuery, ['published', 1, decodeCurser, limit]);//`'%${title}%'`
+            const [result] = await connection.execute(selectQuery, ['published', 1 ,input]);//`'%${title}%'`
             return result;
         } catch (error) {
             console.error(error);

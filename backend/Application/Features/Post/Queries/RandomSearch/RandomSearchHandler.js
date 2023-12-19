@@ -17,7 +17,7 @@ module.exports = {
             decodeCurser = await tool.decryptCursor(cursor);
         }
         const searchResult = await postService.searchInRandom(res, decodeCurser, title ,limit)
-        
+            
         response = await randomSearchRes.customize(res,searchResult,limit);
         return response;
     }
