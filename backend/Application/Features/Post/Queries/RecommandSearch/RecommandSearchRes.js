@@ -13,7 +13,7 @@ module.exports = {
                     title: recommandSearchResult[i].title,
                     content: recommandSearchResult[i].content,
                     main_category: recommandSearchResult[i].main_category,
-                    img_url: searchResult[i].image_url,
+                    img_url: recommandSearchResult[i].image_url,
                     created_at: recommandSearchResult[i].created_at,
                     author: {
                         id: recommandSearchResult[i].uid,
