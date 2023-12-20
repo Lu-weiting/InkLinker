@@ -126,7 +126,7 @@ module.exports = {
             const model = modelDefinition.createModel(userCount, articleCount, categoryCount, embeddingSize);
             console.log("start train");
             // 训练模型
-            await modelTraining.trainModel(model, userInputs, articleInputs, categoryInputs, ys, 20, 32);
+            await modelTraining.trainModel(model, userInputs, articleInputs, categoryInputs, ys, 40, 32);
             console.log("train success");
             const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, userIds, articleCount, transformedData, uniqueArticleIds);
             console.log("predict success", userRecommendations);

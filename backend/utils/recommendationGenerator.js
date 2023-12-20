@@ -9,6 +9,7 @@ function generateRecommendationsForUser(userId, model, userIds, articleCount, tr
         const articleIndex = i;
         const articleData = transformedData.find(data => data.articleIdIndex === articleIndex);
         const categoryEncoding = articleData ? articleData.category : transformedData[0].category; // 如果沒有找到，使用預設值
+        console.log("loop for cate:",categoryEncoding);
         const prediction = model.predict([tf.tensor2d([[userIndex]]), tf.tensor2d([[articleIndex]]), tf.tensor2d([categoryEncoding])]);
         predictions.push(prediction.dataSync()[0]);
     }
