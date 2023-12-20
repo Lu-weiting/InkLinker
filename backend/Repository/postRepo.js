@@ -12,7 +12,7 @@ module.exports = {
             const query = `
                 INSERT INTO posts(title,content,status,user_id) VALUES (? , ? , ? , ?)
             `;
-            const [result] = await connection.execute(query,[data.title,data.content, 'draft',userId]);
+            const [result] = await connection.execute(query, [data.title, data.content, 'draft', userId]);
             return result;
         } catch (error) {
             console.error(error);
@@ -21,21 +21,21 @@ module.exports = {
             console.log('connection release');
         }
     },
-    updatePostStatus: async(res, data , userId, connection)=>{
+    updatePostStatus: async (res, data, userId, connection) => {
         try {
             //tags第一個為main category
-            const {title , content, post_id , tags} = data;
+            const { title, content, post_id, tags } = data;
             const query = 'UPDATE posts SET title = ?, content = ?, main_category = ? , status = ? WHERE user_id = ? AND id = ?';
-            await connection.execute(query, [title , content , tags[0], 'published' ,userId , post_id]);      
+            await connection.execute(query, [title, content, tags[0], 'published', userId, post_id]);
         } catch (error) {
             console.error(error);
             errorMsg.query(res);
         }
     },
-    updatePostMainCategory: async(res, category_id , postId, connection)=>{
+    updatePostMainCategory: async (res, category_id, postId, connection) => {
         try {
             const query = 'UPDATE posts SET main_category_id = ? WHERE id = ?';
-            await connection.execute(query, [category_id , postId]);      
+            await connection.execute(query, [category_id, postId]);
         } catch (error) {
             console.error(error);
             errorMsg.query(res);
@@ -88,7 +88,7 @@ module.exports = {
             `;
 
 
-            const [result] = await connection.execute(selectQuery, ['published', 1 ,input]);//`'%${title}%'`
+            const [result] = await connection.execute(selectQuery, ['published', 1, input]);//`'%${title}%'`
             return result;
         } catch (error) {
             console.error(error);
@@ -114,8 +114,8 @@ module.exports = {
             LIMIT ${limit}
             `;
             console.log("solve pro~~~");
-            console.log("decodeCurser",decodeCurser);
-            console.log("limit",limit);
+            console.log("decodeCurser", decodeCurser);
+            console.log("limit", limit);
             const [result] = await connection.execute(selectQuery, ['published', 1]);
 
             console.log("solve pro2~~~");
@@ -127,16 +127,17 @@ module.exports = {
             console.log('connection release');
         }
     },
-    searchPostByRecommand: async (res, userRecommendations, recommandRedisKey,decodeCurser, limit) => {
+    searchPostByRecommand: async (res, userRecommendations, recommandRedisKey, decodeCurser, limit) => {
         const connection = connectionPromise;
         try {
             let sortedArticleIds = userRecommendations.map(item => item.articleId);
-            console.log("sortedArticleIds",sortedArticleIds);
+            console.log("sortedArticleIds", sortedArticleIds);
             let startIndex = decodeCurser == Math.pow(2, 64) ? 0 : sortedArticleIds.indexOf(decodeCurser);
-            console.log("startIndex",startIndex);
+            console.log("startIndex", startIndex);
             let pagedArticleIds = sortedArticleIds.slice(startIndex, startIndex + limit);
-//AND (P.status = ?) AND (P.is_active = ?)
-            console.log("pagedArticleIds",pagedArticleIds);
+            //AND (P.status = ?) AND (P.is_active = ?)
+            console.log("pagedArticleIds", pagedArticleIds);
+            const placeholders = pagedArticleIds.map(() => '?').join(', ');
             const selectQuery = `
                 SELECT 
                     P.*,
@@ -146,11 +147,11 @@ module.exports = {
                     (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS image_url
                 FROM posts AS P
                 LEFT JOIN users AS U ON P.user_id = U.id 
-                WHERE P.id IN (?) 
-                ORDER BY FIELD(P.id, ?)
+                WHERE P.id IN (${placeholders})
+                ORDER BY FIELD(P.id, ${placeholders})
             `;
-            const [result] = await connection.execute(selectQuery, [pagedArticleIds, pagedArticleIds]);
-            console.log("Reresult: ",result);
+            const [result] = await connection.execute(selectQuery, [...pagedArticleIds, ...pagedArticleIds]);
+            console.log("Reresult: ", result);
             if (recommandRedisKey != '') {
                 await redis.updateCache(recommandRedisKey, result);
             }
@@ -212,8 +213,8 @@ module.exports = {
         try {
 
             const selectQuery = `SELECT * FROM post_like WHERE post_id = ? AND user_id = ?`;
-            const [result] = await connection.execute(selectQuery,[postId,userId]);
-            
+            const [result] = await connection.execute(selectQuery, [postId, userId]);
+
             return result;
         } catch (error) {
             console.error(error);
@@ -222,16 +223,16 @@ module.exports = {
             console.log('connection release');
         }
     },
-    likePost: async(res, postId , connection)=>{
+    likePost: async (res, postId, connection) => {
         try {
             const query = 'UPDATE posts SET like_count = like_count + 1 WHERE id = ?';
-            await connection.execute(query, [postId]);      
+            await connection.execute(query, [postId]);
         } catch (error) {
             console.error(error);
             errorMsg.query(res);
         }
     },
-    deleteLike: async(res, postId , connection)=>{
+    deleteLike: async (res, postId, connection) => {
         try {
             const query = 'UPDATE posts SET like_count = like_count - 1 WHERE id = ?';
             await connection.execute(query, [postId]);
