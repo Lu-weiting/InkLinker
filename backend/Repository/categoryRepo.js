@@ -2,10 +2,10 @@ const connectionPromise = require('../utils/db').connectionPromise;
 // const sql_view = require('../utils/sql_view');
 // const tool = require('../utils/tool');
 const errorMsg = require('../utils/error');
-// const redis = require('../utils/cache');
+const redis = require('../utils/cache');
 module.exports = {
     
-    getAll: async (res) => {
+    getAll: async (res,trainCategoryRedisKey) => {
         const connection = connectionPromise;
         try {
             const selectQuery = `
@@ -13,7 +13,9 @@ module.exports = {
                 FROM main_categories
             `;
             const [result] = await connection.execute(selectQuery);
-           
+            if (trainCategoryRedisKey != '') {
+                await redis.updateCache(trainCategoryRedisKey, result);
+            }
             return result;
         } catch (error) {
             console.error(error);
