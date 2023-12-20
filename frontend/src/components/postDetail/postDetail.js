@@ -257,10 +257,10 @@ const PostDetail = ({ post , islike}) => {
                 <PostContentContainer>
                     <PostContent dangerouslySetInnerHTML={{ __html: cleanContent }} />
                 </PostContentContainer>
-                <FloatButton.BackTop />
                 <TagsContainer>
                     {hashtags}
                 </TagsContainer>
+                <FloatButton.BackTop />
             </Container>
         </Window>
     );

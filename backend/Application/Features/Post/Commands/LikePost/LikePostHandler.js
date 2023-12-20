@@ -8,7 +8,7 @@ module.exports = {
         //init
         let response = null;
 
-        //check 
+        //check
         if(postId === null || my_id === null){
             return errorMsg.inputEmpty(res);
         }
