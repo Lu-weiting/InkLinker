@@ -11,7 +11,7 @@ const dataProcessor = require('../../../../../utils/dataProcessor');
 const modelDefinition = require('../../../../../utils/modelDefinition');
 const modelTraining = require('../../../../../utils/modelTraining');
 const recommendationGenerator = require('../../../../../utils/recommendationGenerator');
-const {createOneHotEncoder} = require('../../../../../utils/categoryEncoder');
+const { createOneHotEncoder } = require('../../../../../utils/categoryEncoder');
 
 const recommandSearchRes = require('./RecommandSearchRes');
 module.exports = {
@@ -31,34 +31,69 @@ module.exports = {
         const predictParamRedisKey = "predictParam";
         const recommandResultForSpecificUserRedisKey = `recommandResult&${userId}`
         const recommandResultForSpecificUser = await redis.getCacheByKey(recommandResultForSpecificUserRedisKey);
-        if(recommandResultForSpecificUser != null)
-        {
-            response = await recommandSearchRes.customize(res,recommandResultForSpecificUser,limit);
+        if (recommandResultForSpecificUser != null) {
+            response = await recommandSearchRes.customize(res, recommandResultForSpecificUser, limit);
             return response;
         }
         try {
-            
+
             // 尝试加载模型
             const model = await tf.loadLayersModel('file:///app/model/myModel/model.json');
             console.log("模型加载成功");
             const predictParam = await redis.getCacheByKey(predictParamRedisKey);
+            if (predictParam == null) {
+                const trainningDataRedis = await redis.getCacheByKey(trainningRedisKey);
+                let queryResults = null;
+                if (trainningDataRedis != null) {
+                    queryResults = trainningDataRedis;
+                } else {
+                    const encodeCategory = await createOneHotEncoder();
+                    const trainModelData = await mlModelService.getTrainModelData(res, trainningRedisKey);
+                    // console.log("transformedData:",trainModelData);
+                    const tData = trainModelData.map(item => {
+                        return {
+                            ...item,
+                            category: encodeCategory(item.category)
+                        };
+                    });
+                    console.log("transformedData:", tData);
+                    queryResults = tData;
+                }
+                // 数据处理
+                const { userIds, articleIds, uniqueUserIds, uniqueArticleIds } = dataProcessor.createIndexMappings(queryResults);
+                const transformedData = dataProcessor.transformData(queryResults, userIds, articleIds);
+                const articleCount = uniqueArticleIds.length;
+                const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, userIds, articleCount, transformedData, uniqueArticleIds);
+                console.log("predict success", userRecommendations);
+                const predictParam = {
+                    userIds: userIds,
+                    articleCount: articleCount,
+                    transformedData: transformedData,
+                    uniqueArticleIds: uniqueArticleIds
+                };
+                await redis.updateCache(predictParamRedisKey, predictParam);
+                const recommandResult = await postService.searchInRecommand(res, userRecommendations, recommandResultForSpecificUserRedisKey, decodeCurser, limit);
+
+                response = await recommandSearchRes.customize(res, recommandResult, limit);
+                return response;
+            }
             console.log(predictParam);
             const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, predictParam.userIds, predictParam.articleCount, predictParam.transformedData, predictParam.uniqueArticleIds);
-            const recommandResult = await postService.searchInRecommand(res,userRecommendations,recommandResultForSpecificUserRedisKey , decodeCurser,limit);
-            response = await recommandSearchRes.customize(res,recommandResult,limit);
+            const recommandResult = await postService.searchInRecommand(res, userRecommendations, recommandResultForSpecificUserRedisKey, decodeCurser, limit);
+            response = await recommandSearchRes.customize(res, recommandResult, limit);
 
             return response;
         } catch (error) {
             console.log("加载模型失败，开始训练新模型");
-            
+
             //TODO: fetch
             const trainningDataRedis = await redis.getCacheByKey(trainningRedisKey);
             let queryResults = null;
-            if(trainningDataRedis != null){
+            if (trainningDataRedis != null) {
                 queryResults = trainningDataRedis;
-            }else{
+            } else {
                 const encodeCategory = await createOneHotEncoder();
-                const trainModelData = await mlModelService.getTrainModelData(res,trainningRedisKey);
+                const trainModelData = await mlModelService.getTrainModelData(res, trainningRedisKey);
                 // console.log("transformedData:",trainModelData);
                 const tData = trainModelData.map(item => {
                     return {
@@ -66,13 +101,13 @@ module.exports = {
                         category: encodeCategory(item.category)
                     };
                 });
-                console.log("transformedData:",tData);
+                console.log("transformedData:", tData);
                 queryResults = tData;
             }
             // 数据处理
             const { userIds, articleIds, uniqueUserIds, uniqueArticleIds } = dataProcessor.createIndexMappings(queryResults);
             const transformedData = dataProcessor.transformData(queryResults, userIds, articleIds);
-            console.log("prepareTrainingData before:",transformedData);
+            console.log("prepareTrainingData before:", transformedData);
             const { userInputs, articleInputs, categoryInputs, ys } = dataProcessor.prepareTrainingData(transformedData);
             const userCount = uniqueUserIds.length;
             const articleCount = uniqueArticleIds.length;
@@ -92,17 +127,17 @@ module.exports = {
             await modelTraining.trainModel(model, userInputs, articleInputs, categoryInputs, ys, 20, 32);
             console.log("train success");
             const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, userIds, articleCount, transformedData, uniqueArticleIds);
-            console.log("predict success",userRecommendations);
+            console.log("predict success", userRecommendations);
             const predictParam = {
                 userIds: userIds,
                 articleCount: articleCount,
                 transformedData: transformedData,
                 uniqueArticleIds: uniqueArticleIds
             };
-            await redis.updateCache(predictParamRedisKey,predictParam);
-            const recommandResult = await postService.searchInRecommand(res,userRecommendations,recommandResultForSpecificUserRedisKey , decodeCurser,limit);
+            await redis.updateCache(predictParamRedisKey, predictParam);
+            const recommandResult = await postService.searchInRecommand(res, userRecommendations, recommandResultForSpecificUserRedisKey, decodeCurser, limit);
 
-            response = await recommandSearchRes.customize(res,recommandResult,limit);
+            response = await recommandSearchRes.customize(res, recommandResult, limit);
             // 保存新训练的模型
             await model.save('file:///app/model/myModel');
             return response;
