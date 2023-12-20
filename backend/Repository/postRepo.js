@@ -131,9 +131,12 @@ module.exports = {
         const connection = connectionPromise;
         try {
             let sortedArticleIds = userRecommendations.map(item => item.articleId);
+            console.log("sortedArticleIds",sortedArticleIds);
             let startIndex = decodeCurser == Math.pow(2, 64) ? 0 : sortedArticleIds.indexOf(decodeCurser);
+            console.log("startIndex",startIndex);
             let pagedArticleIds = sortedArticleIds.slice(startIndex, startIndex + limit);
 //AND (P.status = ?) AND (P.is_active = ?)
+            console.log("pagedArticleIds",pagedArticleIds);
             const selectQuery = `
                 SELECT 
                     P.*,
