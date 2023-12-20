@@ -9,13 +9,14 @@ module.exports = {
         const connection = connectionPromise;
         try {
             const selectQuery = `
-                SELECT DISTINCT name
+                SELECT DISTINCT id,name
                 FROM main_categories
             `;
             const [result] = await connection.execute(selectQuery);
             if (trainCategoryRedisKey != '') {
                 await redis.updateCache(trainCategoryRedisKey, result);
             }
+            console.log(result);
             return result;
         } catch (error) {
             console.error(error);

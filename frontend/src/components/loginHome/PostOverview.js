@@ -40,6 +40,7 @@ const PostBody = styled.div`
   align-items: center;
   margin-top: 8px;
   text-wrap: wrap;
+  justify-content: space-between;
 // word-wrap: break-word;
 // overflow-wrap: break-word;
 `;
@@ -67,12 +68,10 @@ const PostSubtitle = styled.h3`
 `;
 
 const PostImage = styled.img`
-  height: 100%;
-  width: auto;
+  height: 120px;
+  width: 120px;
   margin-left: 1rem;
   border-radius: 4px;
-  max-width: 112px;
-  max-height: 112px;
 
 `;
 const Tag = styled.div`
@@ -86,8 +85,9 @@ const Link = styled.a`
     // overflow-wrap: break-word;
     // text-wrap: wrap;
     word-wrap: break-word;
-    display: block; /* 或者使用 'inline-block' */
-    text-decoration: none; /* 可选，去除下划线 */
+    display: block;
+    text-decoration: none;
+    width: 100%;
 
 `;
 export default function PostOverview({ post, showStatus }) {
