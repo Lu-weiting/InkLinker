@@ -92,7 +92,7 @@ module.exports = {
             await modelTraining.trainModel(model, userInputs, articleInputs, categoryInputs, ys, 20, 32);
             console.log("train success");
             const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, userIds, articleCount, transformedData, uniqueArticleIds);
-            console.log("predict success");
+            console.log("predict success",userRecommendations);
             const predictParam = {
                 userIds: userIds,
                 articleCount: articleCount,
@@ -101,6 +101,7 @@ module.exports = {
             };
             await redis.updateCache(predictParamRedisKey,predictParam);
             const recommandResult = await postService.searchInRecommand(res,userRecommendations,recommandResultForSpecificUserRedisKey , decodeCurser,limit);
+
             response = await recommandSearchRes.customize(res,recommandResult,limit);
             // 保存新训练的模型
             await model.save('file:///app/model/myModel');

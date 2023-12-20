@@ -12,7 +12,6 @@ function generateRecommendationsForUser(userId, model, userIds, articleCount, tr
         const prediction = model.predict([tf.tensor2d([[userIndex]]), tf.tensor2d([[articleIndex]]), tf.tensor2d([categoryEncoding])]);
         predictions.push(prediction.dataSync()[0]);
     }
-    console.log("predictions",predictions);
 
     return predictions
         .map((score, index) => ({ articleId: uniqueArticleIds[index], score }))
