@@ -177,7 +177,7 @@ const PostDetail = ({ post , islike}) => {
     const hashtags =
         tags &&
         tags.map((hashtag,index) => (
-            <Tag key={index}>{hashtag.name}</Tag>
+            <Tag key={index}>{hashtag}</Tag>
         ));
 
     const pastDate = new Date(created_at);
