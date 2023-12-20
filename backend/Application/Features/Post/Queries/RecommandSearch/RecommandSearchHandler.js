@@ -76,12 +76,13 @@ module.exports = {
             const { userInputs, articleInputs, categoryInputs, ys } = dataProcessor.prepareTrainingData(transformedData);
             const userCount = uniqueUserIds.length;
             const articleCount = uniqueArticleIds.length;
-            // const categoryCount = transformedData[0].category.length;
-            const allCategoryRedis = await redis.getCacheByKey(categoryRedisKey);
+            const categoryCount = transformedData[0].category.length;
+            // const allCategoryRedis = await redis.getCacheByKey(categoryRedisKey);
             // const categoryEntityLength = await categoryService.getAll(res,allCategoryRedis).length;
             // console.log("categoryEntityLength",categoryEntityLength);
-            const categoryCount = allCategoryRedis == null ? await categoryService.getAll(res,allCategoryRedis).length : allCategoryRedis.length;
+            // const categoryCount = allCategoryRedis == null ? await categoryService.getAll(res,allCategoryRedis).length : allCategoryRedis.length;
             const embeddingSize = 50;
+            console.log(categoryCount);
 
             // 创建模型
             console.log("start model create");
