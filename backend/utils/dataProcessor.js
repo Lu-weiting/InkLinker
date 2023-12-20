@@ -25,7 +25,7 @@ function prepareTrainingData(transformedData) {
     const articleInputs = tf.tensor2d(transformedData.map(d => [d.articleIdIndex]), [transformedData.length, 1]);
     const categoryInputs = tf.tensor2d(transformedData.map(d => d.category), [transformedData.length, transformedData[0].category.length]);
     const ys = tf.tensor2d(transformedData.map(d => [d.like]), [transformedData.length, 1]);
-    HTMLFormControlsCollection.log('after prepareTrainingData~~');
+    console.log('after prepareTrainingData~~');
     return { userInputs, articleInputs, categoryInputs, ys };
 }
 
