@@ -9,7 +9,7 @@ module.exports = {
                     provider: userInfoObj.provider,
                     name: userInfoObj.name,
                     email: userInfoObj.email,
-                    avator: userInfoObj.avator
+                    avatar: userInfoObj.avatar
                 }
             }
         };

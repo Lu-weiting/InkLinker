@@ -9,7 +9,7 @@ module.exports = {
                     provider: userData[0].provider,
                     name: userData[0].name,
                     email: userData[0].email,
-                    avator: userData[0].avator
+                    avatar: userData[0].avatar
                 }
             }
         };
