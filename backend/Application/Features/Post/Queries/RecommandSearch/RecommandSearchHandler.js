@@ -78,9 +78,9 @@ module.exports = {
             const articleCount = uniqueArticleIds.length;
             // const categoryCount = transformedData[0].category.length;
             const allCategoryRedis = await redis.getCacheByKey(categoryRedisKey);
-            const categoryEntityLength = await categoryService.getAll(res,allCategoryRedis).length;
-            console.log("categoryEntityLength",categoryEntityLength);
-            const categoryCount = allCategoryRedis == null ? categoryEntityLength : allCategoryRedis.length;
+            // const categoryEntityLength = await categoryService.getAll(res,allCategoryRedis).length;
+            // console.log("categoryEntityLength",categoryEntityLength);
+            const categoryCount = allCategoryRedis == null ? await categoryService.getAll(res,allCategoryRedis).length : allCategoryRedis.length;
             const embeddingSize = 50;
 
             // 创建模型
