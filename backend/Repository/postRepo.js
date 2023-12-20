@@ -133,7 +133,7 @@ module.exports = {
             let sortedArticleIds = userRecommendations.map(item => item.articleId);
             let startIndex = decodeCurser == Math.pow(2, 64) ? 0 : sortedArticleIds.indexOf(decodeCurser);
             let pagedArticleIds = sortedArticleIds.slice(startIndex, startIndex + limit);
-
+//AND (P.status = ?) AND (P.is_active = ?)
             const selectQuery = `
                 SELECT 
                     P.*,
@@ -143,10 +143,11 @@ module.exports = {
                     (SELECT PI.img_url FROM post_images AS PI WHERE PI.post_id = P.id LIMIT 1) AS image_url
                 FROM posts AS P
                 LEFT JOIN users AS U ON P.user_id = U.id 
-                WHERE P.id IN (?)
+                WHERE P.id IN (?) 
                 ORDER BY FIELD(P.id, ?)
             `;
             const [result] = await connection.execute(selectQuery, [pagedArticleIds, pagedArticleIds]);
+            console.log("Reresult: ",result);
             if (recommandRedisKey != '') {
                 await redis.updateCache(recommandRedisKey, result);
             }
