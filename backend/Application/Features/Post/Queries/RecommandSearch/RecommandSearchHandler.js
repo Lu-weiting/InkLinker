@@ -80,8 +80,10 @@ module.exports = {
             console.log(predictParam);
             const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, predictParam.userIds, predictParam.articleCount, predictParam.transformedData, predictParam.uniqueArticleIds);
             const recommandResult = await postService.searchInRecommand(res, userRecommendations, recommandResultForSpecificUserRedisKey, decodeCurser, limit);
+            console.log("recommandResult",recommandResult);
             response = await recommandSearchRes.customize(res, recommandResult, limit);
-
+            console.log("recommandresponse",response);
+            
             return response;
         } catch (error) {
             console.log("加载模型失败，开始训练新模型");

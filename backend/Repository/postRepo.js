@@ -113,12 +113,12 @@ module.exports = {
             ORDER BY P.id DESC
             LIMIT ${limit}
             `;
-            console.log("solve pro~~~");
+            // console.log("solve pro~~~");
             console.log("decodeCurser", decodeCurser);
             console.log("limit", limit);
             const [result] = await connection.execute(selectQuery, ['published', 1]);
 
-            console.log("solve pro2~~~");
+            // console.log("solve pro2~~~");
             return result;
         } catch (error) {
             console.error(error);
@@ -151,7 +151,7 @@ module.exports = {
                 ORDER BY FIELD(P.id, ${placeholders})
             `;
             const [result] = await connection.execute(selectQuery, [...pagedArticleIds, ...pagedArticleIds]);
-            console.log("Reresult: ", result);
+            // console.log("Reresult: ", result);
             if (recommandRedisKey != '') {
                 await redis.updateCache(recommandRedisKey, result);
             }

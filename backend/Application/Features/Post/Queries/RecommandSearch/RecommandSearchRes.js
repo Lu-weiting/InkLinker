@@ -18,7 +18,7 @@ module.exports = {
                     author: {
                         id: recommandSearchResult[i].uid,
                         name: recommandSearchResult[i].userName,
-                        avator: recommandSearchResult[i].avator
+                        avatar: recommandSearchResult[i].avatar
                     }
                 }
                 resultArray.push(post);
