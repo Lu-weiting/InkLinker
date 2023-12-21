@@ -45,7 +45,15 @@ module.exports = {
                 const trainningDataRedis = await redis.getCacheByKey(trainningRedisKey);
                 let queryResults = null;
                 if (trainningDataRedis != null) {
-                    queryResults = trainningDataRedis;
+                    const encodeCategory = await createOneHotEncoder();
+                    const tData = trainningDataRedis.map(item => {
+                        return {
+                            ...item,
+                            category: encodeCategory(item.category)
+                        };
+                    });
+                    queryResults = tData;
+
                 } else {
                     const encodeCategory = await createOneHotEncoder();
                     const trainModelData = await mlModelService.getTrainModelData(res, trainningRedisKey);
