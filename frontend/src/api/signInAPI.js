@@ -4,7 +4,8 @@ import Swal from "sweetalert2";
 const api = process.env.REACT_APP_API;
 export async function loginAPI(body) {
   // const api = process.env.REACT_APP_API;
-  const apiUrl = `${api}/users/signin`;
+  // const apiUrl = `${api}/users/signin`;
+  const apiUrl = `https://18.177.160.174/api/1.0/users/signin`;
   console.log(apiUrl);
   try {
     const response = await axios.post(apiUrl, body);
