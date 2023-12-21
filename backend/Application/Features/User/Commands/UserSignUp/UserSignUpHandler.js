@@ -22,7 +22,7 @@ module.exports = {
             email: email,
             hashedPassword: hashedPassword,
             provider: provider,
-            avator: null
+            avatar: null
         };
         console.log(userInfoObj);
         const insertResult = await userService.signUp(res,userInfoObj);

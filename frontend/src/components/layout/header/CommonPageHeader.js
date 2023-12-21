@@ -150,7 +150,7 @@ const CommonHeader = () => {
                     <img src={Bell} alt="bell" width={24} height={24} />
                 </BellA>
                 <MemberA href={Cookies.get("token") ? "/" : "/"}>
-                    <img src={user_avator ? user_avator : Member} alt="profile" width={45} height={45} />
+                    <img src={user_avator != null ? user_avator : Member} alt="profile" width={45} height={45} />
                 </MemberA>
             </RightSection>
         </HeaderContainer>

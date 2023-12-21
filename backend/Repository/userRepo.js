@@ -24,9 +24,9 @@ module.exports = {
     },
     insertNewUser: async(res,userInfoObj, connection)=>{
         try {
-            const {name , email, hashedPassword , provider , avator} = userInfoObj;
+            const {name , email, hashedPassword , provider , avatar} = userInfoObj;
             const signupQuery = 'INSERT INTO users(name, email, password, provider , avatar , isActive) VALUES(?,?,?,?,?,?)';
-            const [result] = await connection.execute(signupQuery, [name, email, hashedPassword, provider , avator , 1]); 
+            const [result] = await connection.execute(signupQuery, [name, email, hashedPassword, provider , avatar , 1]); 
             return result;     
         } catch (error) {
             console.error(error);
