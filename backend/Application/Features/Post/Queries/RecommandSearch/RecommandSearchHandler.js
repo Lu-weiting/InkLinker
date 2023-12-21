@@ -40,8 +40,8 @@ module.exports = {
             // 尝试加载模型
             const model = await tf.loadLayersModel('file:///app/model/myModel/model.json');
             console.log("模型加载成功");
-            const predictParam = await redis.getCacheByKey(predictParamRedisKey);
-            if (predictParam == null) {
+            // const predictParam = await redis.getCacheByKey(predictParamRedisKey);
+            // if (predictParam == null) {
                 const trainningDataRedis = await redis.getCacheByKey(trainningRedisKey);
                 let queryResults = null;
                 if (trainningDataRedis != null) {
@@ -76,13 +76,13 @@ module.exports = {
 
                 response = await recommandSearchRes.customize(res, recommandResult, limit);
                 return response;
-            }
-            console.log(predictParam);
-            const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, predictParam.userIds, predictParam.articleCount, predictParam.transformedData, predictParam.uniqueArticleIds);
-            const recommandResult = await postService.searchInRecommand(res, userRecommendations, recommandResultForSpecificUserRedisKey, decodeCurser, limit);
-            console.log("recommandResult",recommandResult);
-            response = await recommandSearchRes.customize(res, recommandResult, limit);
-            console.log("recommandresponse",response);
+            // }
+            // console.log(predictParam);
+            // const userRecommendations = recommendationGenerator.generateRecommendationsForUser(userId, model, predictParam.userIds, predictParam.articleCount, predictParam.transformedData, predictParam.uniqueArticleIds);
+            // const recommandResult = await postService.searchInRecommand(res, userRecommendations, recommandResultForSpecificUserRedisKey, decodeCurser, limit);
+            // console.log("recommandResult",recommandResult);
+            // response = await recommandSearchRes.customize(res, recommandResult, limit);
+            // console.log("recommandresponse",response);
             
             return response;
         } catch (error) {
