@@ -167,7 +167,7 @@ const LoginSignUpPage = () => {
         Cookies.set("user_id", data.user.id.toString(), maxAge);
         Cookies.set("user_name", data.user.name, maxAge);
         Cookies.set("user_email", data.user.email, maxAge);
-        Cookies.set("user_avatar", data.user.avator, maxAge);
+        Cookies.set("user_avatar", data.user.avatar, maxAge);
     }
     const handleSubmit = async (values) => {
         setIsLoading(true);
