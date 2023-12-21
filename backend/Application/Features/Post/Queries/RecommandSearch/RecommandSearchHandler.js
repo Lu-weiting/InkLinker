@@ -84,7 +84,7 @@ module.exports = {
             // response = await recommandSearchRes.customize(res, recommandResult, limit);
             // console.log("recommandresponse",response);
             
-            return response;
+            // return response;
         } catch (error) {
             console.log("加载模型失败，开始训练新模型");
 
