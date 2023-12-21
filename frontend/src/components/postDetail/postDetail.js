@@ -143,6 +143,7 @@ const PostDetail = ({ post , islike}) => {
     const token = Cookies.get('token');
     console.log("likeCount:",likeCount);
     console.log("fave:",fave);
+    console.log("authorOrnot:",isTaskAssigner)
     // const userId = 1;
     const {
         id,
@@ -154,7 +155,7 @@ const PostDetail = ({ post , islike}) => {
     } = post;
 
     useEffect(() => {
-        setIsTaskAssigner(author.id === userId);
+        setIsTaskAssigner(author.id == userId);
       }, [author.id, userId]);
 
     useEffect(() => {
