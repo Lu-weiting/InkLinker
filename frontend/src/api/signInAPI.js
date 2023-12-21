@@ -1,9 +1,9 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 // import { date } from "yup";
-
+const api = process.env.REACT_APP_API;
 export async function loginAPI(body) {
-  const api = process.env.REACT_APP_API;
+  // const api = process.env.REACT_APP_API;
   const apiUrl = `${api}/users/signin`;
   console.log(apiUrl);
   try {
