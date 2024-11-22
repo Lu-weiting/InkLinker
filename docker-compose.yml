@@ -34,7 +34,7 @@ services:
       - inklinker_network
     depends_on:
       - inklinker_backend
-# /certs?
+
   nginx:
     image: nginx
     container_name: nginx

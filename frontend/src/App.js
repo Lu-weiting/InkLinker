@@ -23,6 +23,7 @@ const PrivateRoute = () => {
   const isLoggedIn = Cookies.get("token");
   return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
 };
+
 function App() {
 
 
