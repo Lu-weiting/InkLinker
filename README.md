@@ -1,5 +1,5 @@
 ### 前言（preface）： 
-這是一個以結合 Medium、Notion 各自優點為目標的部落格平台，其中核心技術在於**編輯器的實作(離線同步恢復、及時保存機制等等)**以及嘗試運用 **Deep Learning 的方式實作推薦演算法**，系統開發流程遵循**Scrum的敏捷開發方式**，是一個為期 3 sprints 的**全端個人專案**且有著高度的 **分層架構 (Layered Architecture)**讓整體的系統更好維護及擴展。
+這是一個以結合 Medium、Notion 各自優點為目標的部落格平台，其中核心技術在於**編輯器的實作(離線同步恢復、及時保存機制等等)**以及嘗試運用 **Deep Learning 的方式實作推薦演算法**，系統開發流程遵循**Scrum的敏捷開發方式**，是一個為期 3 sprints 的**全端個人專案**且有著高度的分層架構 (Layered Architecture) 讓整體的系統更好維護及擴展。
 
 This is a blogging platform aimed at combining the best features of Medium and Notion. Its core technology focuses on the implementation of the editor (offline sync recovery, real-time save mechanism, etc.) and the application of machine learning (ML) for recommendation algorithm development. The system's development process adheres to the Scrum agile development method. It is a full-stack personal project spanning 3 sprints, featuring a highly layered architecture (Layered Architecture) which enhances the overall system's maintainability and scalability.
 
